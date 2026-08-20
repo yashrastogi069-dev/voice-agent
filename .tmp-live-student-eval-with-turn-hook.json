@@ -1,0 +1,78 @@
+{
+  "generatedAt": "2026-08-20T17:12:36.632Z",
+  "profile": "jmc-2026",
+  "results": [
+    {
+      "id": "hindi-fee",
+      "question": "नमस्ते, JMC में B.Voc Healthcare Management की फीस क्या है?",
+      "responseMs": 4961,
+      "assistantText": "",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 0
+    },
+    {
+      "id": "exam-fee-follow-up",
+      "question": "क्या इस फीस में examination fee भी शामिल है?",
+      "responseMs": 2151,
+      "assistantText": "",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 0
+    },
+    {
+      "id": "payment-terms",
+      "question": "क्या मैं fees instalment में pay कर सकती हूँ?",
+      "responseMs": 3002,
+      "assistantText": "",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 0
+    },
+    {
+      "id": "hindi-cuet",
+      "question": "सीयूईटी के बिना एडमिशन हो सकता है?",
+      "responseMs": 1788,
+      "assistantText": "",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 0
+    },
+    {
+      "id": "hindi-csas",
+      "question": "सीएसएएस में आवेदन कैसे करूँ?",
+      "responseMs": 2075,
+      "assistantText": "",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 0
+    },
+    {
+      "id": "programme-list",
+      "question": "क्या Psychology Honours भी available है, और उसकी fees कितनी है?",
+      "responseMs": 1975,
+      "assistantText": "",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 0
+    },
+    {
+      "id": "unsupported-hostel",
+      "question": "क्या JMC में hostel available है?",
+      "responseMs": 2610,
+      "assistantText": "",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 0
+    },
+    {
+      "id": "english-switch",
+      "question": "Can you answer in English from now on?",
+      "responseMs": 1913,
+      "assistantText": "",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 0
+    }
+  ]
+}

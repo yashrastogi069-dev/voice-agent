@@ -1,0 +1,78 @@
+{
+  "generatedAt": "2026-08-20T17:11:15.836Z",
+  "profile": "jmc-2026",
+  "results": [
+    {
+      "id": "hindi-fee",
+      "question": "नमस्ते, JMC में B.Voc Healthcare Management की फीस क्या है?",
+      "responseMs": 4952,
+      "assistantText": "नमस्ते! Bachelor of Vocational Healthcare Management की पहले साल की फीस ₹37,070 है। क्या आप इस प्रोग्राम में एडमिशन लेना चाहते हैं?",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "exam-fee-follow-up",
+      "question": "क्या इस फीस में examination fee भी शामिल है?",
+      "responseMs": 2122,
+      "assistantText": "मैं इस बारे में अंदाज़ा नहीं लगाना चाहती। क्या आप चाहेंगे कि मैं आपके लिए एक काउंसलर से कॉल बैक शेड्यूल कर दूँ?",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "payment-terms",
+      "question": "क्या मैं fees instalment में pay कर सकती हूँ?",
+      "responseMs": 3056,
+      "assistantText": "मैं इस बारे में पक्का नहीं कह सकती। क्या आप चाहेंगे कि मैं आपके लिए एक काउंसलर से कॉल बैक शेड्यूल कर दूँ?",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "hindi-cuet",
+      "question": "सीयूईटी के बिना एडमिशन हो सकता है?",
+      "responseMs": 2564,
+      "assistantText": "मैं इस बारे में अंदाज़ा नहीं लगाना चाहती। क्या आप चाहेंगे कि मैं आपके लिए एक काउंसलर से कॉल बैक शेड्यूल कर दूँ?",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "hindi-csas",
+      "question": "सीएसएएस में आवेदन कैसे करूँ?",
+      "responseMs": 2658,
+      "assistantText": "एडमिशन के लिए आपको यूनिवर्सिटी ऑफ दिल्ली के एडमिशन बुलेटिन और CSAS प्रोसेस को फॉलो करना होगा। क्या आप किसी खास प्रोग्राम में रुचि रखते हैं?",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "programme-list",
+      "question": "क्या Psychology Honours भी available है, और उसकी fees कितनी है?",
+      "responseMs": 1634,
+      "assistantText": "मेरे पास Psychology Honours की जानकारी नहीं है। क्या आप चाहेंगे कि मैं इस बारे में जानकारी के लिए एक काउंसलर से कॉल बैक शेड्यूल कर दूँ?",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "unsupported-hostel",
+      "question": "क्या JMC में hostel available है?",
+      "responseMs": 1701,
+      "assistantText": "मैं इस बारे में अंदाज़ा नहीं लगाना चाहती। क्या आप चाहेंगे कि मैं आपके लिए एक काउंसलर से कॉल बैक शेड्यूल कर दूँ?",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "english-switch",
+      "question": "Can you answer in English from now on?",
+      "responseMs": 1830,
+      "assistantText": "Yes, I can. How can I help you further?",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    }
+  ]
+}

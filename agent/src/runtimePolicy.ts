@@ -2,7 +2,7 @@ import type { TurnHandlingOptions } from "@livekit/agents";
 
 export const LIVE_TURN_HANDLING: Partial<TurnHandlingOptions> = {
   turnDetection: "vad",
-  endpointing: { mode: "dynamic", minDelay: 380, maxDelay: 1100 },
+  endpointing: { mode: "dynamic", minDelay: 280, maxDelay: 800 },
   interruption: {
     enabled: true,
     mode: "vad",
@@ -14,6 +14,8 @@ export const LIVE_TURN_HANDLING: Partial<TurnHandlingOptions> = {
   },
   preemptiveGeneration: { enabled: true },
 };
+
+export const LIVE_USER_AWAY_TIMEOUT_SECONDS = 45;
 
 export type ConversationTurn = { role: "student" | "agent"; text: string };
 

@@ -1,0 +1,42 @@
+[dotenv@17.2.3] injecting env (0) from .env.local -- tip: ⚙️  suppress all logs with { quiet: true }
+{
+  "generatedAt": "2026-08-20T16:57:42.746Z",
+  "results": [
+    {
+      "id": "hindi-fee",
+      "text": "जे एम सी में बी वॉक की फीस सैंतीस हज़ार सत्तर रुपये है।",
+      "firstAudioMs": 5231,
+      "totalSynthesisMs": 5843,
+      "frames": 41,
+      "requestId": "tts_request_ca8564af-70b",
+      "passed": true
+    },
+    {
+      "id": "hindi-admissions",
+      "text": "एडमिशन दिल्ली विश्वविद्यालय के सीएसएएस प्रक्रिया के ज़रिए होता है। आप किस कोर्स के बारे में जानना चाहेंगे?",
+      "firstAudioMs": 1497,
+      "totalSynthesisMs": 2236,
+      "frames": 73,
+      "requestId": "tts_request_072c505a-805",
+      "passed": true
+    },
+    {
+      "id": "english-switch",
+      "text": "Yes, I can answer in English. Which course or admission detail would you like to know?",
+      "firstAudioMs": 1637,
+      "totalSynthesisMs": 2483,
+      "frames": 49,
+      "requestId": "tts_request_602972f2-c64",
+      "passed": true
+    },
+    {
+      "id": "two-sentence-answer",
+      "text": "मनोविज्ञान ऑनर्स की फीस अट्ठाईस हज़ार छह सौ अस्सी रुपये है। फीस का भुगतान ऑनलाइन किया जाता है।",
+      "firstAudioMs": 1513,
+      "totalSynthesisMs": 3262,
+      "frames": 73,
+      "requestId": "tts_request_716fd3ac-36c",
+      "passed": true
+    }
+  ]
+}

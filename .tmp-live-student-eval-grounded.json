@@ -1,0 +1,78 @@
+{
+  "generatedAt": "2026-08-20T17:16:18.646Z",
+  "profile": "jmc-2026",
+  "results": [
+    {
+      "id": "hindi-fee",
+      "question": "नमस्ते, JMC में B.Voc Healthcare Management की फीस क्या है?",
+      "responseMs": 5135,
+      "assistantText": "नमस्ते! B.Voc Healthcare Management की पहले साल की सालाना फीस ₹37,070 है, जिसमें एग्जामिनेशन फीस शामिल नहीं है।",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "exam-fee-follow-up",
+      "question": "क्या इस फीस में examination fee भी शामिल है?",
+      "responseMs": 2734,
+      "assistantText": "नहीं, इस फीस में एग्जामिनेशन फीस शामिल नहीं है। इसकी जानकारी आपको कॉलेज या दिल्ली यूनिवर्सिटी के एडमिशन चैनल्स से कन्फर्म करनी होगी।",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "payment-terms",
+      "question": "क्या मैं fees instalment में pay कर सकती हूँ?",
+      "responseMs": 7770,
+      "assistantText": "क्षमा करें, मेरे पास किस्तों में फीस भरने के बारे में जानकारी नहीं है। मैं इस बारे में अंदाज़ा नहीं लगाना चाहती।",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "hindi-cuet",
+      "question": "सीयूईटी के बिना एडमिशन हो सकता है?",
+      "responseMs": 2865,
+      "assistantText": "नहीं, 2026-27 के लिए अंडरग्रेजुएट एडमिशन NTA द्वारा आयोजित CUET UG स्कोर पर आधारित हैं। सभी आवेदकों को दिल्ली यूनिवर्सिटी के CSAS फॉर्म को भरना होगा।",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "hindi-csas",
+      "question": "सीएसएएस में आवेदन कैसे करूँ?",
+      "responseMs": 2172,
+      "assistantText": "आपको दिल्ली यूनिवर्सिटी के Common Seat Allocation System यानी CSAS फॉर्म को रजिस्टर करके पूरा करना होगा। इसके लिए आपका CUET UG स्कोर होना ज़रूरी है।",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "programme-list",
+      "question": "क्या Psychology Honours भी available है, और उसकी fees कितनी है?",
+      "responseMs": 1420,
+      "assistantText": "हाँ, B.A. Psychology Honours उपलब्ध है। इसकी पहले साल की सालाना फीस ₹29,180 है, जिसमें एग्जामिनेशन फीस शामिल नहीं है।",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "unsupported-hostel",
+      "question": "क्या JMC में hostel available है?",
+      "responseMs": 1682,
+      "assistantText": "मेरे पास हॉस्टल की उपलब्धता के बारे में कोई कन्फर्म ऑफिशियल जानकारी नहीं है।",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    },
+    {
+      "id": "english-switch",
+      "question": "Can you answer in English from now on?",
+      "responseMs": 2128,
+      "assistantText": "Yes, I can. How can I help you further?",
+      "tools": [],
+      "toolErrors": [],
+      "eventCount": 1
+    }
+  ]
+}

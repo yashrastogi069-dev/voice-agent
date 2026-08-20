@@ -3,9 +3,25 @@ import { fileURLToPath } from "node:url";
 import dotenv from "dotenv";
 import { CollegeAdmissionsAgent } from "./collegeAgent";
 import { getCollegeProfile } from "./collegeKnowledge";
-import { LIVE_TURN_HANDLING } from "./runtimePolicy";
+import { LIVE_TURN_HANDLING, LIVE_USER_AWAY_TIMEOUT_SECONDS } from "./runtimePolicy";
 
 dotenv.config({ path: ".env.local" });
+
+type AgentProcessData = { tts?: inference.TTS };
+
+function createTts(): inference.TTS {
+  return new inference.TTS({
+    model: process.env.LIVEKIT_TTS_MODEL ?? "elevenlabs/eleven_flash_v2_5",
+    voice: process.env.LIVEKIT_TTS_VOICE ?? "Xb7hH8MSUJpSbSDYk0k2",
+    language: process.env.AGENT_TTS_LANGUAGE ?? "hi",
+    modelOptions: {
+      auto_mode: true,
+      apply_text_normalization: "auto",
+      apply_language_text_normalization: true,
+      speed: 1.05,
+    },
+  });
+}
 
 function profileIdFromRoom(ctx: JobContext): string | undefined {
   try {
@@ -16,27 +32,34 @@ function profileIdFromRoom(ctx: JobContext): string | undefined {
   }
 }
 
-export default defineAgent({
+export default defineAgent<AgentProcessData>({
+  prewarm: (proc) => {
+    const tts = createTts();
+    tts.prewarm();
+    proc.userData.tts = tts;
+  },
   entry: async (ctx: JobContext) => {
     const profile = getCollegeProfile(profileIdFromRoom(ctx));
     const session = new voice.AgentSession({
       stt: new inference.STT({
-        model: process.env.LIVEKIT_STT_MODEL ?? "deepgram/nova-3",
-        language: process.env.AGENT_STT_LANGUAGE ?? "multi",
+        model: process.env.LIVEKIT_STT_MODEL ?? "elevenlabs/scribe_v2_realtime",
+        language: process.env.AGENT_STT_LANGUAGE ?? "hi",
       }),
-      llm: new inference.LLM({ model: process.env.LIVEKIT_LLM_MODEL ?? "google/gemma-4-31b-it" }),
-      tts: new inference.TTS({
-        model: process.env.LIVEKIT_TTS_MODEL ?? "inworld/inworld-tts-2",
-        voice: process.env.LIVEKIT_TTS_VOICE ?? "Ashley",
+      llm: new inference.LLM({
+        model: process.env.LIVEKIT_LLM_MODEL ?? "google/gemma-4-31b-it",
+        modelOptions: { temperature: 0.15, max_completion_tokens: 110 },
       }),
+      tts: ctx.proc.userData.tts ?? createTts(),
       turnHandling: LIVE_TURN_HANDLING,
+      userAwayTimeout: LIVE_USER_AWAY_TIMEOUT_SECONDS,
     });
 
     await session.start({ agent: new CollegeAdmissionsAgent(profile), room: ctx.room });
     await ctx.connect();
-    await session.generateReply({
-      instructions: `Greet the caller briefly as the admissions representative for ${profile.institution}. Ask whether they would like information about a programme or admissions.`,
-    });
+    await session.say(
+      `नमस्ते, मैं ${profile.institution} से बोल रही हूँ। मैं आपको कोर्स, फीस या एडमिशन की जानकारी दे सकती हूँ। आप किस बारे में जानना चाहेंगे?`,
+      { allowInterruptions: true },
+    );
   },
 });
 

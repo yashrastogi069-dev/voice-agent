@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { assessSpeechResponse, BoundedConversationState, LIVE_TURN_HANDLING } from "./runtimePolicy";
+import { assessSpeechResponse, BoundedConversationState, LIVE_TURN_HANDLING, LIVE_USER_AWAY_TIMEOUT_SECONDS } from "./runtimePolicy";
 
 describe("real-time conversation policy", () => {
+  it("keeps enough post-greeting silence for a normal phone caller to begin speaking", () => {
+    expect(LIVE_USER_AWAY_TIMEOUT_SECONDS).toBe(45);
+  });
+
   it("keeps interruption enabled and avoids resuming obsolete speech after a caller takes the turn", () => {
     expect(LIVE_TURN_HANDLING.interruption?.enabled).toBe(true);
     expect(LIVE_TURN_HANDLING.interruption?.minDuration).toBeLessThanOrEqual(250);

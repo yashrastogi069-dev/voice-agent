@@ -6,7 +6,7 @@ import { z } from "zod";
 import { profileInstructions, type CollegeProfile } from "./collegeKnowledge";
 import { buildVoiceAgentEvent, publishVoiceAgentEvent } from "./events";
 import { BoundedConversationState, LIVE_TURN_HANDLING } from "./runtimePolicy";
-import { retrieveApprovedFacts } from "./factRetrieval";
+import { buildTurnGrounding, retrieveApprovedFacts } from "./factRetrieval";
 import { SpeechTextBuffer } from "./speechText";
 
 export class CollegeAdmissionsAgent extends voice.Agent {
@@ -18,7 +18,7 @@ export class CollegeAdmissionsAgent extends voice.Agent {
       instructions: profileInstructions(profile),
       tools: {
         request_counsellor_callback: llm.tool({
-          description: "Create a callback request only when the caller asks to speak to an admissions counsellor, requests more detail outside the approved profile, or asks to be called later.",
+          description: "Create a callback request only when the caller explicitly asks for a counsellor, human, or callback after receiving the approved answer. Do not offer or call this tool during the early information exchange, and never use it merely because an approved detail is unavailable in a general answer.",
           parameters: z.object({
             contactId: z.string().describe("The caller contact identifier from the session metadata"),
             programmeInterest: z.string().describe("The programme or subject the caller wants to discuss"),
@@ -57,7 +57,7 @@ export class CollegeAdmissionsAgent extends voice.Agent {
           },
         }),
         lookup_approved_college_facts: llm.tool({
-          description: "Look up approved college facts before answering factual questions about programmes, fees, eligibility, scholarships, or admissions. Use callback for unsupported topics.",
+          description: "For every question about the college, courses, fees, payment, CUET, CSAS, minority seats, location, eligibility, scholarships, or admissions, call this tool before answering. It is also required for broad questions such as 'tell me about the college' and Hindi or Hinglish equivalents. Give the returned supported facts first. Offer a callback only if the returned result says the topic is unsupported or requires confirmation.",
           parameters: z.object({ question: z.string() }),
           flags: llm.ToolFlag.CANCELLABLE,
           onDuplicate: "replace",
@@ -69,11 +69,15 @@ export class CollegeAdmissionsAgent extends voice.Agent {
     this.profile = profile;
   }
 
-  override async onUserTurnCompleted(_chatCtx: ChatContext, newMessage: ChatMessage): Promise<void> {
+  override async onUserTurnCompleted(chatCtx: ChatContext, newMessage: ChatMessage): Promise<void> {
     if (!newMessage.textContent?.trim()) {
       throw new voice.StopResponse();
     }
     this.conversationState.add({ role: "student", text: newMessage.textContent });
+    chatCtx.addMessage({
+      role: "developer",
+      content: buildTurnGrounding(this.profile, newMessage.textContent),
+    });
   }
 
   override async ttsNode(text: ReadableStream<string> | AsyncIterable<string>, modelSettings: ModelSettings) {

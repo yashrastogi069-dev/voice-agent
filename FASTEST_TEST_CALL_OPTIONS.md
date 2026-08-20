@@ -4,7 +4,7 @@
 
 **Yes.** If your immediate goal is simply to hear the agent make **one real call to a phone number you control**, the shortest practical LiveKit-compatible experiment is a **minimal Twilio account upgrade plus a Twilio Elastic SIP Trunk connected to the LiveKit agent**. A Twilio trial can verify your own Indian number first, but Twilio documents that SIP Trunking becomes available only after an account upgrade. [1] [8]
 
-For a real India outreach product, however, this is **not a replacement for compliant Indian number, consent, and carrier requirements**. The faster self-service production-shaped alternative is **Plivo Zentrunk + LiveKit**, but India traffic still requires an India data-region account, KYC-approved Indian number, India media anchoring, LiveKit India region pinning, and explicit digital consent for commercial calls. [2] [3]
+For a real India outreach product, however, this is **not a replacement for compliant Indian number, consent, and carrier requirements**. The faster self-service production-shaped alternative is **Plivo Zentrunk +`**, but India traffic still requires an India data-region account, KYC-approved Indian number, India media anchoring, LiveKit India region pinning, and explicit digital consent for commercial calls. [2] [3]
 
 ## Choose One Route
 
@@ -31,17 +31,28 @@ You can make the agent call **your own verified Indian mobile number**. This is 
 ### Beginner steps
 
 1. Create a [Twilio trial account](https://www.twilio.com/try-twilio) using an Indian mobile number.
-2. Verify your email and personal number. Your signup phone becomes verified automatically. Add your second controlled test number only if needed.
-3. Upgrade the account using the smallest suitable paid balance/account option shown in Twilio Console. Do not buy a campaign product or add unrelated phone numbers.
-4. In Twilio Console, open **Voice → Settings → Geo permissions** and enable only the Indian low-risk destination ranges needed for your test. [5]
-5. In Twilio Console, open **Products & Services → Elastic SIP Trunking → Trunks → Create new SIP trunk**.
-6. Open the new trunk’s **Termination** tab. Set a unique termination SIP domain.
-7. Open **Voice → Credential lists**. Create a credential list with a fresh SIP username and strong password.
-8. Return to the trunk. In **Termination → Authentication**, attach that credential list and save.
-9. In LiveKit Cloud, open **Telephony → SIP trunks → Create new trunk → Outbound**.
-10. Create the LiveKit trunk using the Twilio termination domain plus the same username and password. LiveKit’s Twilio guide describes this matching-authentication flow. [4]
-11. Copy the LiveKit outbound trunk ID and use the secure secret form in this project to provide the LiveKit values and test caller configuration. Do not place these credentials in GitHub or normal chat.
-12. We will keep the app disabled until you give written approval for the one verified test number, then execute only that test.
+
+1. Verify your email and personal number. Your signup phone becomes verified automatically. Add your second controlled test number only if needed.
+
+1. Upgrade the account using the smallest suitable paid balance/account option shown in Twilio Console. Do not buy a campaign product or add unrelated phone numbers.
+
+1. In Twilio Console, open **Voice → Settings → Geo permissions** and enable only the Indian low-risk destination ranges needed for your test. [5]
+
+1. In Twilio Console, open **Products & Services → Elastic SIP Trunking → Trunks → Create new SIP trunk**.
+
+1. Open the new trunk’s **Termination** tab. Set a unique termination SIP domain.
+
+1. Open **Voice → Credential lists**. Create a credential list with a fresh SIP username and strong password.
+
+1. Return to the trunk. In **Termination → Authentication**, attach that credential list and save.
+
+1. In LiveKit Cloud, open **Telephony → SIP trunks → Create new trunk → Outbound**.
+
+1. Create the LiveKit trunk using the Twilio termination domain plus the same username and password. LiveKit’s Twilio guide describes this matching-authentication flow. [4]
+
+1. Copy the LiveKit outbound trunk ID and use the secure secret form in this project to provide the LiveKit values and test caller configuration. Do not place these credentials in GitHub or normal chat.
+
+1. We will keep the app disabled until you give written approval for the one verified test number, then execute only that test.
 
 ### Important limitation
 
@@ -72,10 +83,18 @@ Reply with exactly one choice:
 ## References
 
 [1]: https://www.twilio.com/docs/usage/trials "Twilio trial account"
+
 [2]: https://www.plivo.com/docs/voice/concepts/india-calling "Plivo India calling regulations"
+
 [3]: https://www.plivo.com/docs/voice-agents/sip-trunking/deploy/calling-in-india/ "Plivo voice-agent calling in India"
+
 [4]: https://docs.livekit.io/telephony/start/providers/twilio/ "LiveKit Twilio SIP trunk quickstart"
+
 [5]: https://www.twilio.com/docs/sip-trunking/voice-dialing-geographic-permissions "Twilio Voice geographic permissions"
+
 [6]: https://docs.livekit.io/telephony/start/providers/plivo/ "LiveKit Plivo SIP trunk quickstart"
+
 [7]: https://developer.exotel.com/docs/call-support/call-features/outgoing-calls "Exotel outgoing calling methods"
+
 [8]: https://www.twilio.com/docs/sip-trunking/scale-and-limits "Twilio SIP Trunking scale and limits"
+

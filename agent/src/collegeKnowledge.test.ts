@@ -5,7 +5,7 @@ import { getCollegeProfile, profileInstructions } from "./collegeKnowledge";
 describe("live college-agent grounding", () => {
   it("selects only an enabled official college profile and falls back safely", () => {
     expect(getCollegeProfile("jmc-2026").institution).toContain("Jesus and Mary College");
-    expect(getCollegeProfile("unknown-profile").profileId).toBe(DELHI_COLLEGE_PROFILES[0].profileId);
+    expect(getCollegeProfile("unknown-profile").profileId).toBe("jmc-2026");
   });
 
   it("puts strict live-call behavior and factual boundaries into the agent instructions", () => {
@@ -14,6 +14,9 @@ describe("live college-agent grounding", () => {
     expect(instructions).toContain("do not want to guess");
     expect(instructions).toContain("do-not-call tool immediately");
     expect(instructions).toContain("₹28,680");
+    expect(instructions).toContain("begin in Hindi");
+    expect(instructions).toContain("only then answer in English");
+    expect(instructions).toContain("do not tell a caller to check a website");
     expect(instructions).not.toContain("Northbridge College");
   });
 });
