@@ -70,3 +70,4 @@
 - [x] Document the ongoing repository update process for future completed changes in `GITHUB_UPDATE_WORKFLOW.md`.
 - [x] Create the confirmed public GitHub repository `voice-agent`, push the complete project, and verify the public remote URL: https://github.com/yashrastogi069-dev/voice-agent.
 - [ ] Configure carrier-specific recording/transcript retention, retry rules, and event delivery after the selected provider credentials and a permitted test route are supplied.
+- [x] Fix the dashboard toggle that does not close after it is opened by using the sidebar provider state, and verify the dashboard shell at desktop and mobile breakpoints.

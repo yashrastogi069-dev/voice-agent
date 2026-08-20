@@ -18,11 +18,12 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { startLogin } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
 import { BriefcaseBusiness, Headphones, LayoutDashboard, LogOut, PanelLeft, PhoneOutgoing, ShieldCheck, UsersRound } from "lucide-react";
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import React, { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from "./DashboardLayoutSkeleton";
 
@@ -71,13 +72,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   );
 }
 
+export function NavigationToggle() {
+  const { toggleSidebar } = useSidebar();
+  return <button onClick={toggleSidebar} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[#9bb1c9] transition-colors hover:bg-[#173957] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62c4bd]" aria-label="Toggle navigation"><PanelLeft className="h-4 w-4" /></button>;
+}
+
 function DashboardLayoutContent({ children, setSidebarWidth }: { children: React.ReactNode; setSidebarWidth: (width: number) => void }) {
   const { user, logout } = useAuth();
   const [location, setLocation] = useLocation();
-  const [collapsed, setCollapsed] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const { state } = useSidebar();
+  const collapsed = state === "collapsed";
   const activeItem = menuItems.find(item => item.path === location) ?? menuItems[0];
 
   useEffect(() => {
@@ -108,7 +115,7 @@ function DashboardLayoutContent({ children, setSidebarWidth }: { children: React
         <Sidebar collapsible="icon" className="border-r border-[#1b3555] bg-[#102a46] text-[#eaf1fa]" onMouseEnter={() => undefined}>
           <SidebarHeader className="h-[86px] justify-center border-b border-[#1b3555] px-3">
             <div className="flex w-full items-center gap-3">
-              <button onClick={() => setCollapsed(!collapsed)} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[#9bb1c9] transition-colors hover:bg-[#173957] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62c4bd]" aria-label="Toggle navigation"><PanelLeft className="h-4 w-4" /></button>
+              <NavigationToggle />
               {!collapsed && <div className="min-w-0"><div className="text-[15px] font-semibold tracking-[-0.025em] text-white">Voice Control</div><div className="mt-0.5 text-[11px] font-medium tracking-[0.08em] text-[#8da4bd]">OPERATIONS CONSOLE</div></div>}
             </div>
           </SidebarHeader>
