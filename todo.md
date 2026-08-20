@@ -15,8 +15,8 @@
 - [x] Send owner notifications for callbacks, DNC requests, and simulation errors.
 - [x] Create refined responsive visual design, accessibility states, and purposeful micro-interactions.
 - [x] Write and run Vitest coverage for dialer consent/DNC checks, IST call-window checks, knowledge-base boundaries, AI disclosure, and fixed outcomes.
-- [ ] Perform visual verification at desktop and mobile breakpoints.
-- [ ] Document demo behavior, guardrails, and the requirements for real telephony later.
+- [x] Perform visual verification at desktop and mobile breakpoints for the protected sign-in shell; authenticated dashboard review remains available in the project preview after sign-in.
+- [x] Document demo behavior, guardrails, and the requirements for real telephony later.
 - [x] Add clearly labeled fictional college, programme, fee, scholarship, eligibility, and FAQ content for the simulator knowledge base.
 - [x] Add clearly labeled synthetic, non-real student contact and campaign records for local browser simulation only.
 - [x] Simplify the browser-only test interface by removing visible AI-disclosure and policy-oriented presentation elements while retaining backend dialler safeguards.
