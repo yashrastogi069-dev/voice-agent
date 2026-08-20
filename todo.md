@@ -75,5 +75,5 @@
 - [x] Research and recommend the fastest safe India-compatible alternative to Exotel vSIP for one controlled real voice-agent test call in `FASTEST_TEST_CALL_OPTIONS.md`: Twilio verified-number trial for speed; Plivo/Exotel for India production compliance.
 - [x] Audit and synchronize every safe project file to the public GitHub repository: all 166 tracked files exactly match the public tree; only six intentional local exclusions remain (four local logs plus generated Manus metadata).
 - [ ] Publish the current checkpoint through the management interface and record the resulting stable public application URL.
-- [ ] Verify unauthenticated public GitHub and raw-file access, then document why third-party AI tools may still reject the repository URL.
+- [x] Verify unauthenticated public GitHub and raw-file access: repository page, GitHub API, raw source, public clone discovery, and the new raw README endpoint all return successfully; third-party AI rejection is a tool/browser limitation rather than a repository block.
 - [x] Add a root README that explains the public project, repository layout, safe local setup, and the intentional exclusion of secrets and live-call credentials.
