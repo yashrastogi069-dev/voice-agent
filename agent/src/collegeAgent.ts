@@ -5,12 +5,13 @@ import { ReadableStream, TransformStream } from "node:stream/web";
 import { z } from "zod";
 import { profileInstructions, type CollegeProfile } from "./collegeKnowledge";
 import { buildVoiceAgentEvent, publishVoiceAgentEvent } from "./events";
-import { LIVE_TURN_HANDLING } from "./runtimePolicy";
+import { BoundedConversationState, LIVE_TURN_HANDLING } from "./runtimePolicy";
 import { retrieveApprovedFacts } from "./factRetrieval";
 import { SpeechTextBuffer } from "./speechText";
 
 export class CollegeAdmissionsAgent extends voice.Agent {
   readonly profile: CollegeProfile;
+  readonly conversationState = new BoundedConversationState();
 
   constructor(profile: CollegeProfile) {
     super({
@@ -72,6 +73,7 @@ export class CollegeAdmissionsAgent extends voice.Agent {
     if (!newMessage.textContent?.trim()) {
       throw new voice.StopResponse();
     }
+    this.conversationState.add({ role: "student", text: newMessage.textContent });
   }
 
   override async ttsNode(text: ReadableStream<string> | AsyncIterable<string>, modelSettings: ModelSettings) {

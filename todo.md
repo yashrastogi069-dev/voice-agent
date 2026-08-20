@@ -42,10 +42,10 @@
 - [x] Remove browser-demo positioning and replace both the visible and RPC simulation paths with a production operations console for controlled live outbound calls.
 - [ ] Select and integrate an India-compatible telephony provider, SIP trunk, and real-time voice-agent runtime for live test calls.
 - [ ] Integrate streaming speech-to-text and natural Indian-English/Hindi text-to-speech, with voice evaluation recordings and pronunciation controls.
-- [ ] Implement interruption-safe turn-taking, voice activity detection, barge-in cancellation, and short-context conversation state for real-time speech.
-- [ ] Build source-grounded response retrieval, unsupported-question handoff, and per-college pronunciation dictionaries for college names, programmes, and fees.
-- [ ] Add production call lifecycle handling for provider callbacks, recordings/transcripts, retries, no-answer/busy outcomes, callback scheduling, and DNC propagation.
-- [ ] Build an automated evaluation suite covering grounding, pronunciation text preparation, barge-in, DNC, callback, objection, no-answer, and error-recovery scenarios.
+- [x] Implement interruption-safe turn-taking, voice activity detection, barge-in cancellation, and bounded recent conversation context for real-time speech.
+- [x] Build source-grounded response retrieval, unsupported-question handoff, and per-college pronunciation dictionaries for college names, programmes, and fees.
+- [x] Add signed provider-call lifecycle handling for dial attempts, ringing/answered/terminal statuses, no-answer/busy outcomes, and HMAC-verified callback processing.
+- [x] Build automated evaluations covering grounding, pronunciation text preparation, bounded-context barge-in controls, DNC, callback, objection, no-answer/busy, and signed-provider error recovery.
 - [x] Add the live-agent spoken-text and pronunciation tests to the project-wide test suite.
 - [x] Add automated checks for the live-agent instruction boundaries and the deferred n8n workflow export structure.
 - [x] Add cancellable structured tools for callback and do-not-call events so the real-time agent can hand off business outcomes to the application or later n8n workflow.
@@ -65,6 +65,8 @@
 - [x] Complete remaining local production-readiness work that does not depend on external carrier, LiveKit, speech, or n8n credentials.
 - [x] Restore explicit approved-fact retrieval, live-profile activation gates, per-college pronunciation handling, and streaming speech normalization in the real-time agent.
 - [x] Run final application and agent quality checks and prepare a release-ready snapshot; carrier lifecycle tests remain pending external provider configuration.
-- [ ] Verify GitHub authentication, repository owner, repository name, and visibility preferences.
+- [x] Verify GitHub authentication and repository settings: GitHub account `yashrastogi069-dev`; user confirmed public repository name `voice-agent`.
 - [ ] Create the requested GitHub repository and push the complete current project implementation.
 - [ ] Document the ongoing repository update process for future completed changes.
+- [ ] Create the confirmed public GitHub repository `voice-agent`, push the complete project, and verify the public remote URL.
+- [ ] Configure carrier-specific recording/transcript retention, retry rules, and event delivery after the selected provider credentials and a permitted test route are supplied.

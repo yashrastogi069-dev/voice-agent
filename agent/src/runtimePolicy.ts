@@ -15,6 +15,30 @@ export const LIVE_TURN_HANDLING: Partial<TurnHandlingOptions> = {
   preemptiveGeneration: { enabled: true },
 };
 
+export type ConversationTurn = { role: "student" | "agent"; text: string };
+
+/** Keeps only recent, bounded text that is useful for a live spoken exchange. */
+export class BoundedConversationState {
+  private turns: ConversationTurn[] = [];
+
+  constructor(private readonly maxTurns = 6, private readonly maxCharacters = 1_200) {}
+
+  add(turn: ConversationTurn): void {
+    const clean = turn.text.trim().replace(/\s+/g, " ");
+    if (!clean) return;
+    this.turns.push({ role: turn.role, text: clean.slice(0, this.maxCharacters) });
+    this.trim();
+  }
+
+  recent(): ConversationTurn[] {
+    return [...this.turns];
+  }
+
+  private trim(): void {
+    while (this.turns.length > this.maxTurns || this.turns.reduce((total, turn) => total + turn.text.length, 0) > this.maxCharacters) this.turns.shift();
+  }
+}
+
 export function assessSpeechResponse(text: string): string[] {
   const issues: string[] = [];
   if (text.length > 420) issues.push("response is too long for one spoken turn");

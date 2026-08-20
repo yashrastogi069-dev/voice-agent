@@ -13,4 +13,15 @@ describe("live agent business events", () => {
     expect(event.createdAt).toBeTruthy();
     expect(event.collegeProfileId).toBe("jmc-2026");
   });
+
+  it("creates an immediate do-not-call event with the selected college profile", () => {
+    const event = buildVoiceAgentEvent({
+      event: "dnc_recorded",
+      contactId: "contact-42",
+      collegeProfileId: "jmc-2026",
+      payload: { reason: "Caller requested no future calls" },
+    });
+    expect(event.event).toBe("dnc_recorded");
+    expect(event.payload.reason).toContain("no future calls");
+  });
 });

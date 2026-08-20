@@ -71,6 +71,7 @@ describe("outbound policy gate", () => {
   it("routes clear affirmative and opt-out replies without depending on LLM classification", () => {
     expect(classifyKnownTurn("Yes")).toMatchObject({ intent: "interested" });
     expect(classifyKnownTurn("Please do not call me again")).toMatchObject({ intent: "dnc" });
+    expect(classifyKnownTurn("I am busy, please call me later")).toMatchObject({ intent: "callback" });
     expect(responseForIntent({ intent: "interested", courseIndex: 0, language: "English", knowledge: DEMO_COLLEGE_KNOWLEDGE }).outcome).toBe("interested");
   });
 

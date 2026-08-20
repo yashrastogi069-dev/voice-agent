@@ -5,6 +5,7 @@ import {
   addContact,
   addContactsBulk,
   approveCampaign,
+  createLiveCallAttempt,
   createCampaign,
   getLiveCallContext,
   getWorkspace,
@@ -56,7 +57,7 @@ export function classifyKnownTurn(message: string): { intent: ApprovedIntent; co
   const normalized = message.trim().toLowerCase();
   if (/\b(do not call|don't call|stop calling|remove me|unsubscribe|dnc)\b|कॉल मत|कॉल बंद|हटाइए/.test(normalized)) return { intent: "dnc", courseIndex: 0 };
   if (/\b(not interested|no thanks|not now|nope)\b|दिलचस्पी नहीं|नहीं चाहिए/.test(normalized)) return { intent: "not_interested", courseIndex: 0 };
-  if (/\b(call ?back|callback|counsellor|counselor|call me later)\b|वापस कॉल|कॉल बैक/.test(normalized)) return { intent: "callback", courseIndex: 0 };
+  if (/\b(call ?back|callback|counsellor|counselor|call me later|busy|not a good time|no time)\b|वापस कॉल|कॉल बैक/.test(normalized)) return { intent: "callback", courseIndex: 0 };
   if (/^(yes|yeah|yep|sure|okay|ok|interested|i am interested|haan|ha|हाँ|हां|जी हाँ|जी हां)[!. ]*$/i.test(normalized)) return { intent: "interested", courseIndex: 0 };
   return null;
 }
@@ -97,7 +98,7 @@ export const voiceAgentRouter = router({
       return {
         allowed: eligibility.allowed && profileReady,
         reason: !eligibility.allowed ? eligibility.reason : profileReady ? "Ready for live provider configuration." : knowledge.liveActivation?.reason ?? "This college profile is not ready for a live call.",
-        providerConfigured: Boolean(process.env.LIVEKIT_URL && process.env.LIVEKIT_API_KEY && process.env.LIVEKIT_API_SECRET && process.env.LIVEKIT_OUTBOUND_TRUNK_ID && process.env.LIVE_CALLS_ENABLED === "true"),
+        providerConfigured: Boolean(process.env.LIVEKIT_URL && process.env.LIVEKIT_API_KEY && process.env.LIVEKIT_API_SECRET && process.env.LIVEKIT_OUTBOUND_TRUNK_ID && process.env.LIVEKIT_CALLER_ID && process.env.LIVE_CALL_PROVIDER_EVENT_SECRET && process.env.LIVE_CALLS_ENABLED === "true"),
       };
     }),
     dial: protectedProcedure.input(z.object({ campaignId: z.number().int().positive(), contactId: z.number().int().positive(), userConfirmed: z.literal(true) })).mutation(async ({ ctx, input }) => {
@@ -107,8 +108,10 @@ export const voiceAgentRouter = router({
       const allowed = eligibility.allowed && knowledge.liveActivation?.eligible === true;
       await recordPolicyAudit({ userId: ctx.user.id, workflow: "outbound", eventType: "live_call_preflight", allowed, message: allowed ? "Live call passed the contact, campaign, and profile gates." : (!eligibility.allowed ? eligibility.reason : knowledge.liveActivation?.reason ?? "Profile not ready.") });
       if (!allowed) throw new TRPCError({ code: "FORBIDDEN", message: !eligibility.allowed ? eligibility.reason : knowledge.liveActivation?.reason ?? "This college profile is not ready for a live call." });
+      if (!process.env.LIVE_CALL_PROVIDER_EVENT_SECRET) throw new TRPCError({ code: "PRECONDITION_FAILED", message: "Live call lifecycle security is not configured: missing LIVE_CALL_PROVIDER_EVENT_SECRET." });
       try {
         const call = await placeLiveOutboundCall({ contactId: String(context.contact.id), phoneNumber: context.contact.phoneNumber, collegeProfileId: knowledge.profileId, campaignId: String(context.campaign.id), contactName: context.contact.fullName });
+        await createLiveCallAttempt({ userId: ctx.user.id, campaignId: context.campaign.id, contactId: context.contact.id, collegeProfileId: knowledge.profileId, roomName: call.roomName, participantId: call.participantId });
         return { success: true, call };
       } catch (error) {
         await notifyOwner({ title: "Live outbound call did not start", content: error instanceof Error ? error.message : "The SIP dial adapter returned an unknown error." });

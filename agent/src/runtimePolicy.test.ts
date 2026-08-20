@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { assessSpeechResponse, LIVE_TURN_HANDLING } from "./runtimePolicy";
+import { assessSpeechResponse, BoundedConversationState, LIVE_TURN_HANDLING } from "./runtimePolicy";
 
 describe("real-time conversation policy", () => {
   it("keeps interruption enabled and avoids resuming obsolete speech after a caller takes the turn", () => {
@@ -15,5 +15,16 @@ describe("real-time conversation policy", () => {
       "response contains a URL",
       "response contains an email address",
     ]));
+  });
+
+  it("keeps only bounded recent conversation context for a live speech exchange", () => {
+    const state = new BoundedConversationState(2, 40);
+    state.add({ role: "student", text: "First question" });
+    state.add({ role: "agent", text: "First answer" });
+    state.add({ role: "student", text: "Second question" });
+    expect(state.recent()).toEqual([
+      { role: "agent", text: "First answer" },
+      { role: "student", text: "Second question" },
+    ]);
   });
 });

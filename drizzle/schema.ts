@@ -90,6 +90,23 @@ export const callbackRequests = mysqlTable("callbackRequests", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
+export const liveCallAttempts = mysqlTable("liveCallAttempts", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  campaignId: int("campaignId").notNull(),
+  contactId: int("contactId").notNull(),
+  collegeProfileId: varchar("collegeProfileId", { length: 80 }).notNull(),
+  roomName: varchar("roomName", { length: 160 }).notNull().unique(),
+  participantId: varchar("participantId", { length: 160 }),
+  status: mysqlEnum("status", ["queued", "dialing", "ringing", "answered", "completed", "failed", "busy", "no_answer", "cancelled"]).default("queued").notNull(),
+  providerEventId: varchar("providerEventId", { length: 160 }),
+  failureReason: text("failureReason"),
+  startedAt: timestamp("startedAt"),
+  endedAt: timestamp("endedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
 export const policyAudits = mysqlTable("policyAudits", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull(),
@@ -105,3 +122,4 @@ export type InsertUser = typeof users.$inferInsert;
 export type StudentContact = typeof studentContacts.$inferSelect;
 export type Campaign = typeof campaigns.$inferSelect;
 export type CallRecord = typeof callRecords.$inferSelect;
+export type LiveCallAttempt = typeof liveCallAttempts.$inferSelect;

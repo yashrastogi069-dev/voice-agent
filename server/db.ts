@@ -5,6 +5,7 @@ import {
   callRecords,
   campaigns,
   InsertUser,
+  liveCallAttempts,
   policyAudits,
   studentContacts,
   users,
@@ -58,14 +59,15 @@ export async function getUserByOpenId(openId: string) {
 
 export async function getWorkspace(userId: number) {
   const db = await requireDb();
-  const [contacts, userCampaigns, records, policies, callbacks] = await Promise.all([
+  const [contacts, userCampaigns, records, policies, callbacks, attempts] = await Promise.all([
     db.select().from(studentContacts).where(eq(studentContacts.userId, userId)).orderBy(desc(studentContacts.createdAt)),
     db.select().from(campaigns).where(eq(campaigns.userId, userId)).orderBy(desc(campaigns.createdAt), desc(campaigns.id)),
     db.select().from(callRecords).where(eq(callRecords.userId, userId)).orderBy(desc(callRecords.createdAt)),
     db.select().from(workflowPolicies).where(eq(workflowPolicies.userId, userId)),
     db.select().from(callbackRequests).where(eq(callbackRequests.userId, userId)).orderBy(desc(callbackRequests.createdAt)),
+    db.select().from(liveCallAttempts).where(eq(liveCallAttempts.userId, userId)).orderBy(desc(liveCallAttempts.createdAt)),
   ]);
-  return { contacts, campaigns: userCampaigns, records, policies, callbacks };
+  return { contacts, campaigns: userCampaigns, records, policies, callbacks, attempts };
 }
 
 export async function syncCollegeProfiles(userId: number) {
@@ -178,4 +180,31 @@ export async function recordPolicyAudit(input: {
 }) {
   const db = await requireDb();
   await db.insert(policyAudits).values(input);
+}
+
+export async function createLiveCallAttempt(input: {
+  userId: number;
+  campaignId: number;
+  contactId: number;
+  collegeProfileId: string;
+  roomName: string;
+  participantId: string;
+}) {
+  const db = await requireDb();
+  await db.insert(liveCallAttempts).values({ ...input, status: "dialing", startedAt: new Date() });
+}
+
+export async function updateLiveCallAttemptFromProviderEvent(input: {
+  roomName: string;
+  providerEventId?: string;
+  status: "queued" | "dialing" | "ringing" | "answered" | "completed" | "no_answer" | "busy" | "failed" | "cancelled";
+  ended: boolean;
+}) {
+  const db = await requireDb();
+  await db.update(liveCallAttempts).set({
+    status: input.status,
+    providerEventId: input.providerEventId,
+    failureReason: input.status === "failed" ? "Provider reported a failed call." : null,
+    endedAt: input.ended ? new Date() : null,
+  }).where(eq(liveCallAttempts.roomName, input.roomName));
 }
