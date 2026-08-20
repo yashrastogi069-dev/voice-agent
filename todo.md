@@ -74,3 +74,4 @@
 - [x] Create a beginner-friendly, click-by-click Exotel onboarding and LiveKit SIP request guide for the controlled India outbound-call setup in `EXOTEL_BEGINNER_SETUP.md`.
 - [x] Research and recommend the fastest safe India-compatible alternative to Exotel vSIP for one controlled real voice-agent test call in `FASTEST_TEST_CALL_OPTIONS.md`: Twilio verified-number trial for speed; Plivo/Exotel for India production compliance.
 - [x] Audit and synchronize every safe project file to the public GitHub repository: all 166 tracked files exactly match the public tree; only six intentional local exclusions remain (four local logs plus generated Manus metadata).
+- [ ] Publish the current checkpoint through the management interface and record the resulting stable public application URL.
