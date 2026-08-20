@@ -1,0 +1,23 @@
+# Project TODO
+
+- [x] Establish the internal dashboard shell with Outbound, Inbound Support, and Delegated Task workflow areas.
+- [x] Enforce workflow-specific permissions and policy controls in the backend.
+- [x] Create consent-controlled student contact records with Hindi/English preference, IST timezone, valid-consent evidence, and DNC flag.
+- [x] Add a contact manager for manual contact entry and consent-safe CSV import preview.
+- [x] Create a consent and suppression ledger that prevents invalid or DNC contacts from being selected at the dialer level.
+- [x] Build outbound campaigns with an approved knowledge base, approved script, 9am–9pm IST window, frequency cap, and approval gate.
+- [x] Implement a hard-coded AI disclosure for every simulated outbound call opening.
+- [x] Implement an LLM-backed, knowledge-base-bounded student conversation simulator with fixed permitted outcomes.
+- [x] Build a browser-based text and Web Speech API call-simulation experience without public telephony.
+- [x] Persist simulated call records, transcripts, outcome classifications, and per-contact call history.
+- [x] Add a human-handoff trigger and callback queue for simulated calls.
+- [x] Display campaign analytics for call attempts, fixed outcome counts, opt-outs, and per-contact history.
+- [x] Send owner notifications for callbacks, DNC requests, and simulation errors.
+- [x] Create refined responsive visual design, accessibility states, and purposeful micro-interactions.
+- [x] Write and run Vitest coverage for dialer consent/DNC checks, IST call-window checks, knowledge-base boundaries, AI disclosure, and fixed outcomes.
+- [ ] Perform visual verification at desktop and mobile breakpoints.
+- [ ] Document demo behavior, guardrails, and the requirements for real telephony later.
+- [x] Add clearly labeled fictional college, programme, fee, scholarship, eligibility, and FAQ content for the simulator knowledge base.
+- [x] Add clearly labeled synthetic, non-real student contact and campaign records for local browser simulation only.
+- [x] Simplify the browser-only test interface by removing visible AI-disclosure and policy-oriented presentation elements while retaining backend dialler safeguards.
+- [x] Supersede the visible AI-disclosure test opening in the browser-only synthetic demo; retain disclosure as a production requirement before enabling real calls.
