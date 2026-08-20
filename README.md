@@ -55,9 +55,10 @@ GITHUB_UPDATE_WORKFLOW.md
 Use the documentation in this order:
 
 1. [`FASTEST_TEST_CALL_OPTIONS.md`](./FASTEST_TEST_CALL_OPTIONS.md) explains the fastest controlled test choices and their limitations.
-2. [`EXOTEL_BEGINNER_SETUP.md`](./EXOTEL_BEGINNER_SETUP.md) provides the Exotel account, KYC, and SIP request steps.
-3. [`GETTING_LIVE_CREDENTIALS.md`](./GETTING_LIVE_CREDENTIALS.md) lists the secure values required by the application.
-4. [`LIVE_AGENT_ACTIVATION.md`](./LIVE_AGENT_ACTIVATION.md) defines the controlled first-call process.
+2. [`TWILIO_CONTROLLED_TEST_SETUP.md`](./TWILIO_CONTROLLED_TEST_SETUP.md) provides the corrected minimal-upgrade Twilio and LiveKit steps for one verified test number.
+3. [`EXOTEL_BEGINNER_SETUP.md`](./EXOTEL_BEGINNER_SETUP.md) provides the Exotel account, KYC, and SIP request steps.
+4. [`GETTING_LIVE_CREDENTIALS.md`](./GETTING_LIVE_CREDENTIALS.md) lists the secure values required by the application.
+5. [`LIVE_AGENT_ACTIVATION.md`](./LIVE_AGENT_ACTIVATION.md) defines the controlled first-call process.
 
 Never initiate outreach to real students until provider setup, consent checks, caller identity, approved content, and the controlled test process are complete.
 
