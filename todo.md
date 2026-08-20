@@ -66,7 +66,7 @@
 - [x] Restore explicit approved-fact retrieval, live-profile activation gates, per-college pronunciation handling, and streaming speech normalization in the real-time agent.
 - [x] Run final application and agent quality checks and prepare a release-ready snapshot; carrier lifecycle tests remain pending external provider configuration.
 - [x] Verify GitHub authentication and repository settings: GitHub account `yashrastogi069-dev`; user confirmed public repository name `voice-agent`.
-- [ ] Create the requested GitHub repository and push the complete current project implementation.
-- [ ] Document the ongoing repository update process for future completed changes.
-- [ ] Create the confirmed public GitHub repository `voice-agent`, push the complete project, and verify the public remote URL.
+- [x] Create the requested GitHub repository and push the complete current project implementation.
+- [x] Document the ongoing repository update process for future completed changes in `GITHUB_UPDATE_WORKFLOW.md`.
+- [x] Create the confirmed public GitHub repository `voice-agent`, push the complete project, and verify the public remote URL: https://github.com/yashrastogi069-dev/voice-agent.
 - [ ] Configure carrier-specific recording/transcript retention, retry rules, and event delivery after the selected provider credentials and a permitted test route are supplied.
