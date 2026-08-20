@@ -10,7 +10,7 @@ import {
   users,
   workflowPolicies,
 } from "../drizzle/schema";
-import { DEMO_APPROVED_SCRIPT, DEMO_COLLEGE_KNOWLEDGE, DEMO_WORKFLOW_POLICIES } from "./demoContent";
+import { DELHI_COLLEGE_PROFILES, DEMO_APPROVED_SCRIPT, DEMO_WORKFLOW_POLICIES } from "./demoContent";
 import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -60,7 +60,7 @@ export async function getWorkspace(userId: number) {
   const db = await requireDb();
   const [contacts, userCampaigns, records, policies, callbacks] = await Promise.all([
     db.select().from(studentContacts).where(eq(studentContacts.userId, userId)).orderBy(desc(studentContacts.createdAt)),
-    db.select().from(campaigns).where(eq(campaigns.userId, userId)).orderBy(desc(campaigns.createdAt)),
+    db.select().from(campaigns).where(eq(campaigns.userId, userId)).orderBy(desc(campaigns.createdAt), desc(campaigns.id)),
     db.select().from(callRecords).where(eq(callRecords.userId, userId)).orderBy(desc(callRecords.createdAt)),
     db.select().from(workflowPolicies).where(eq(workflowPolicies.userId, userId)),
     db.select().from(callbackRequests).where(eq(callbackRequests.userId, userId)).orderBy(desc(callbackRequests.createdAt)),
@@ -70,20 +70,23 @@ export async function getWorkspace(userId: number) {
 
 export async function seedSyntheticDemoWorkspace(userId: number) {
   const db = await requireDb();
-  const existing = await db.select().from(campaigns).where(and(eq(campaigns.userId, userId), eq(campaigns.isSynthetic, true))).limit(1);
-  if (existing.length > 0) return getWorkspace(userId);
+  const existing = await db.select().from(campaigns).where(and(eq(campaigns.userId, userId), eq(campaigns.isSynthetic, true)));
+  const existingNames = new Set(existing.map(campaign => campaign.name));
+  const profilesToAdd = DELHI_COLLEGE_PROFILES.filter(profile => !existingNames.has(`${profile.institution} — 2026–27 outreach`));
 
-  await db.insert(campaigns).values({
-    userId,
-    name: "Autumn admissions information — DEMO",
-    status: "draft",
-    approvedScript: DEMO_APPROVED_SCRIPT,
-    knowledgeBase: JSON.stringify(DEMO_COLLEGE_KNOWLEDGE),
-    callingStartHour: 9,
-    callingEndHour: 21,
-    frequencyCap: 2,
-    isSynthetic: true,
-  });
+  if (profilesToAdd.length > 0) {
+    await db.insert(campaigns).values(profilesToAdd.map(profile => ({
+      userId,
+      name: `${profile.institution} — 2026–27 outreach`,
+      status: "draft" as const,
+      approvedScript: DEMO_APPROVED_SCRIPT,
+      knowledgeBase: JSON.stringify(profile),
+      callingStartHour: 9,
+      callingEndHour: 21,
+      frequencyCap: 2,
+      isSynthetic: true,
+    })));
+  }
 
   await db.insert(studentContacts).values([
     { userId, fullName: "Aarav Test", phoneNumber: "+91 00000 00001", language: "English", timezone: "Asia/Kolkata", consentStatus: "opt_in", consentSource: "Synthetic demo opt-in", consentScope: "College information demo", consentAt: new Date(), dnc: false, isSynthetic: true },

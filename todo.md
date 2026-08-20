@@ -21,3 +21,44 @@
 - [x] Add clearly labeled synthetic, non-real student contact and campaign records for local browser simulation only.
 - [x] Simplify the browser-only test interface by removing visible AI-disclosure and policy-oriented presentation elements while retaining backend dialler safeguards.
 - [x] Supersede the visible AI-disclosure test opening in the browser-only synthetic demo; retain disclosure as a production requirement before enabling real calls.
+- [x] Diagnose and fix the reported outbound-demo runtime or workflow errors from logs and reproducible test paths.
+- [x] Guard malformed campaign and policy JSON, and replace direct browser-global route reads with router state to avoid refetch-time dashboard crashes.
+- [x] Default the workspace to the latest verified college profile after profile synchronization.
+- [x] Add deterministic handling for short affirmative, callback, and do-not-call responses before the LLM classifier is invoked.
+- [x] Fix the React cleanup crash triggered after sending a simulated student response.
+- [x] Complete the outbound workflow from campaign preparation through permitted contact selection, simulation, outcome capture, callback handling, and operator review.
+- [x] Produce a production-readiness implementation guide covering India-compatible telephony, low-latency speech, LLM orchestration, deployment, observability, and consent controls.
+- [x] Define and document n8n workflows for contact synchronization, campaign approval, callback routing, notifications, and post-call CRM updates.
+- [x] Document two implementation paths, real-call component boundaries, credential requirements, and the event-driven role of n8n.
+- [x] Replace fictional college programme, fee, eligibility, and admissions content with verified official-source data for the selected institution.
+- [x] Add an official-source, multi-college Delhi content model that keeps each institution’s data and citation separate until client authorization is provided.
+- [x] Configure the selected Delhi college profiles to identify the represented institution explicitly, using the user’s stated authorization and separately verified official source records.
+- [x] Show the active college profile’s academic year, programme fee context, and official source links in the outbound workspace.
+- [x] Remove the remaining fictional programme references from the outbound conversation, source labels, and sample-question path.
+- [x] Hide the retired fictional campaign from the operator experience while retaining database history non-destructively.
+- [ ] Verify the final authenticated outbound journey in the browser: synchronize a college profile, approve it, select a permitted contact, start and complete a conversation, and confirm the resulting record and callback state.
+- [ ] Recheck browser-console and network logs after the final authenticated journey and resolve any remaining reproducible runtime failures.
+- [ ] Supersede the single-college content task with fully normalized current official programme, fee, eligibility, and admissions fields for every enabled Delhi college profile, or restrict activation to profiles whose current data is complete.
+- [ ] Remove browser-demo positioning and redesign the dashboard as a production operations console for live outbound calls.
+- [ ] Select and integrate an India-compatible telephony provider, SIP trunk, and real-time voice-agent runtime for live test calls.
+- [ ] Integrate streaming speech-to-text and natural Indian-English/Hindi text-to-speech, with voice evaluation recordings and pronunciation controls.
+- [ ] Implement interruption-safe turn-taking, voice activity detection, barge-in cancellation, and short-context conversation state for real-time speech.
+- [ ] Build source-grounded response retrieval, unsupported-question handoff, and per-college pronunciation dictionaries for college names, programmes, and fees.
+- [ ] Add production call lifecycle handling for provider callbacks, recordings/transcripts, retries, no-answer/busy outcomes, callback scheduling, and DNC propagation.
+- [ ] Build an automated evaluation suite covering grounding, pronunciation text preparation, barge-in, DNC, callback, objection, no-answer, and error-recovery scenarios.
+- [x] Add the live-agent spoken-text and pronunciation tests to the project-wide test suite.
+- [x] Add automated checks for the live-agent instruction boundaries and the deferred n8n workflow export structure.
+- [x] Add cancellable structured tools for callback and do-not-call events so the real-time agent can hand off business outcomes to the application or later n8n workflow.
+- [x] Add deterministic evaluation checks for interruption timing, obsolete-speech cancellation policy, and spoken-output safety.
+- [ ] Configure a reachable n8n instance for signed webhooks, CRM synchronization, callback tasks, DNC propagation, and operational error alerts.
+- [ ] Obtain provider credentials, verified caller identity, a permitted test number, and written approval before initiating any real outbound test call.
+- [x] Build the self-hostable LiveKit Agents runtime as the selected free-first real-time agent foundation.
+- [x] Keep the agent runtime free and self-hostable where possible, while documenting carrier call-minute costs as the required external cost for real phone calls.
+- [x] Export a standalone n8n workflow JSON file for later import, without requiring a reachable n8n endpoint during core agent development.
+- [x] Produce a decision-grade comparison of LiveKit SIP, direct Exotel AgentStream, and managed-agent approaches, covering real-time quality, cost, operational risk, implementation effort, and India telephony fit.
+- [x] Document exactly how the deferred n8n workflow JSON is imported, configured, and activated once the local n8n instance is publicly reachable.
+- [x] Add a concise architecture map that distinguishes the real-time carrier/agent/dashboard path from deferred n8n business-event automation.
+- [x] Add a concise architecture map that distinguishes the real-time carrier/agent/dashboard path from deferred n8n business-event automation.
+- [x] Produce the decision-grade architecture comparison and record the selected LiveKit SIP path with direct Exotel AgentStream as the validated fallback.
+- [x] Add the self-hostable LiveKit Agents runtime foundation, interruption-safe session configuration, spoken-text formatter, and n8n event workflow export.
+- [x] Add a safe outbound SIP dial adapter with E.164 validation, per-call college metadata, required credential checks, and an explicit live-call activation gate.

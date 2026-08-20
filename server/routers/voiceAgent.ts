@@ -21,6 +21,7 @@ const outcomeSchema = z.enum(["interested", "callback", "not_interested", "dnc"]
 const languageSchema = z.enum(["English", "Hindi"]);
 
 type Knowledge = typeof DEMO_COLLEGE_KNOWLEDGE;
+type ApprovedIntent = "interested" | "courses" | "fees" | "eligibility" | "scholarship" | "admissions" | "campus" | "callback" | "not_interested" | "dnc" | "unsupported";
 
 function parseKnowledge(value: string): Knowledge {
   try {
@@ -42,14 +43,24 @@ export function responseForIntent(input: {
 
   if (intent === "dnc") return { reply: hindi ? knowledge.hindi.dnc : "I understand. I’ll record your request to stop future outreach. Thank you for letting me know.", outcome: "dnc", requiresHuman: false, source: "DNC policy" };
   if (intent === "not_interested") return { reply: hindi ? knowledge.hindi.notInterested : "No problem at all. Thank you for your time, and I won’t take any more of it today.", outcome: "not_interested", requiresHuman: false, source: "Approved closing" };
-  if (intent === "callback") return { reply: hindi ? knowledge.hindi.callback : "Certainly. I’ll queue a callback request for an admissions counsellor so they can help with the next steps.", outcome: "callback", requiresHuman: true, source: "Callback policy" };
+  if (intent === "callback") return { reply: hindi ? knowledge.hindi.callback : "Certainly. I’ll queue a callback request for an admissions counsellor so they can help with the next steps.", outcome: "callback", requiresHuman: true, source: "Callback request" };
+  if (intent === "interested") return { reply: hindi ? `बहुत अच्छा। आप इनमें से किस कार्यक्रम के बारे में जानना चाहेंगे: ${knowledge.courses.map(item => item.name).join(", ")}?` : `That’s great to hear. Which programme would you like to explore first: ${knowledge.courses.map(item => item.name).join(", ")}?`, outcome: "interested", requiresHuman: false, source: "Selected profile follow-up" };
   if (intent === "fees") return { reply: hindi ? `${course.name} की डेमो वार्षिक फीस ${course.fee} है। सटीक फीस और भुगतान विकल्प के लिए मैं काउंसलर से कॉल बैक का अनुरोध कर सकती हूँ।` : `For this demo, the annual fee for ${course.name} is ${course.fee}. A counsellor can confirm the exact fee schedule and payment options.`, outcome: "interested", requiresHuman: false, source: `${course.name} fee` };
   if (intent === "courses") return { reply: hindi ? `हमारे डेमो में ${knowledge.courses.map(item => item.name).join(", ")} शामिल हैं। ${course.name} ${course.duration} का कार्यक्रम है।` : `The approved demo information includes ${knowledge.courses.map(item => item.name).join(", ")}. ${course.name} is a ${course.duration} programme.`, outcome: "interested", requiresHuman: false, source: "Programme list" };
   if (intent === "eligibility") return { reply: hindi ? `${course.name} के लिए डेमो पात्रता है: ${course.eligibility}। काउंसलर आपकी व्यक्तिगत पात्रता की पुष्टि कर सकता है।` : `For ${course.name}, the approved demo eligibility is: ${course.eligibility}. A counsellor can confirm your individual eligibility.`, outcome: "interested", requiresHuman: false, source: `${course.name} eligibility` };
   if (intent === "scholarship") return { reply: hindi ? `डेमो जानकारी के अनुसार, मेरिट आधारित छात्रवृत्ति एडमिशन रिव्यू के बाद 25% तक हो सकती है। अंतिम पात्रता काउंसलर बताएगा।` : knowledge.scholarship, outcome: "interested", requiresHuman: false, source: "Scholarship policy" };
   if (intent === "admissions") return { reply: hindi ? `डेमो एडमिशन प्रक्रिया में एन्क्वायरी, पात्रता समीक्षा, आवेदन और काउंसलर फॉलो-अप शामिल हैं।` : knowledge.admissions, outcome: "interested", requiresHuman: false, source: "Admissions process" };
   if (intent === "campus") return { reply: hindi ? `डेमो कॉलेज में लैब, प्रोजेक्ट स्टूडियो और करियर-सपोर्ट सेशन बताए गए हैं। आधिकारिक जानकारी के लिए काउंसलर से बात कीजिए।` : knowledge.campus, outcome: "interested", requiresHuman: false, source: "Campus overview" };
-  return { reply: hindi ? knowledge.hindi.unavailable : "I only have approved demo information for courses, fees, eligibility, scholarships, admissions, and campus facilities. I can request a counsellor callback for anything else.", outcome: "callback", requiresHuman: true, source: "Approved-content boundary" };
+  return { reply: hindi ? knowledge.hindi.unavailable : "I only have the selected college’s approved information for programmes, fees, eligibility, scholarships, admissions, and campus details. I can request an admissions-team callback for anything else.", outcome: "callback", requiresHuman: true, source: "Selected-profile boundary" };
+}
+
+export function classifyKnownTurn(message: string): { intent: ApprovedIntent; courseIndex: number } | null {
+  const normalized = message.trim().toLowerCase();
+  if (/\b(do not call|don't call|stop calling|remove me|unsubscribe|dnc)\b|कॉल मत|कॉल बंद|हटाइए/.test(normalized)) return { intent: "dnc", courseIndex: 0 };
+  if (/\b(not interested|no thanks|not now|nope)\b|दिलचस्पी नहीं|नहीं चाहिए/.test(normalized)) return { intent: "not_interested", courseIndex: 0 };
+  if (/\b(call ?back|callback|counsellor|counselor|call me later)\b|वापस कॉल|कॉल बैक/.test(normalized)) return { intent: "callback", courseIndex: 0 };
+  if (/^(yes|yeah|yep|sure|okay|ok|interested|i am interested|haan|ha|हाँ|हां|जी हाँ|जी हां)[!. ]*$/i.test(normalized)) return { intent: "interested", courseIndex: 0 };
+  return null;
 }
 
 async function classifyTurn(input: { message: string; knowledge: Knowledge }) {
@@ -61,7 +72,7 @@ async function classifyTurn(input: { message: string; knowledge: Knowledge }) {
       schema: {
         type: "object",
         properties: {
-          intent: { type: "string", enum: ["courses", "fees", "eligibility", "scholarship", "admissions", "campus", "callback", "not_interested", "dnc", "unsupported"] },
+          intent: { type: "string", enum: ["interested", "courses", "fees", "eligibility", "scholarship", "admissions", "campus", "callback", "not_interested", "dnc", "unsupported"] },
           courseIndex: { type: "integer", minimum: 0, maximum: 2 },
         },
         required: ["intent", "courseIndex"],
@@ -78,7 +89,7 @@ async function classifyTurn(input: { message: string; knowledge: Knowledge }) {
       },
       {
         role: "user",
-        content: `Approved courses: ${input.knowledge.courses.map((course, index) => `${index}: ${course.name}`).join("; ")}\nApproved topics: courses, fees, eligibility, scholarship, admissions, campus, callback, not interested, DNC.\nStudent message: ${input.message}`,
+        content: `Approved courses: ${input.knowledge.courses.map((course, index) => `${index}: ${course.name}`).join("; ")}\nApproved topics: interest, courses, fees, eligibility, scholarship, admissions, campus, callback, not interested, DNC.\nStudent message: ${input.message}`,
       },
     ],
     response_format: schema,
@@ -154,7 +165,7 @@ export const voiceAgentRouter = router({
       if (!eligibility.allowed) throw new TRPCError({ code: "FORBIDDEN", message: eligibility.reason });
       const knowledge = parseKnowledge(context.campaign.knowledgeBase);
       try {
-        const classification = await classifyTurn({ message: input.message, knowledge });
+        const classification = classifyKnownTurn(input.message) ?? await classifyTurn({ message: input.message, knowledge });
         return responseForIntent({ ...classification, language: context.contact.language, knowledge });
       } catch (error) {
         await notifyOwner({ title: "Simulation needs review", content: "The LLM classifier could not complete a synthetic outbound simulation. The demo fell back to the approved-content boundary." });

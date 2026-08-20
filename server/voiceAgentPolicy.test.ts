@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { asFixedOutcome, evaluateOutboundEligibility, isWithinIstCallingWindow } from "./voiceAgentPolicy";
-import { DEMO_COLLEGE_KNOWLEDGE } from "./demoContent";
-import { responseForIntent } from "./routers/voiceAgent";
+import { DELHI_COLLEGE_PROFILES, DEMO_COLLEGE_KNOWLEDGE } from "./demoContent";
+import { classifyKnownTurn, responseForIntent } from "./routers/voiceAgent";
 
 const campaign = {
   status: "approved" as const,
@@ -64,7 +64,22 @@ describe("outbound policy gate", () => {
     });
     expect(reply.outcome).toBe("callback");
     expect(reply.requiresHuman).toBe(true);
-    expect(reply.source).toBe("Approved-content boundary");
-    expect(reply.reply).toContain("only have approved demo information");
+    expect(reply.source).toBe("Selected-profile boundary");
+    expect(reply.reply).toContain("only have the selected college’s approved information");
+  });
+
+  it("routes clear affirmative and opt-out replies without depending on LLM classification", () => {
+    expect(classifyKnownTurn("Yes")).toMatchObject({ intent: "interested" });
+    expect(classifyKnownTurn("Please do not call me again")).toMatchObject({ intent: "dnc" });
+    expect(responseForIntent({ intent: "interested", courseIndex: 0, language: "English", knowledge: DEMO_COLLEGE_KNOWLEDGE }).outcome).toBe("interested");
+  });
+
+  it("uses source-linked Delhi college profiles and current JMC fee context instead of retired fictional data", () => {
+    const jmc = DELHI_COLLEGE_PROFILES.find(profile => profile.profileId === "jmc-2026");
+    expect(DELHI_COLLEGE_PROFILES).toHaveLength(3);
+    expect(jmc?.academicYear).toBe("2026–27");
+    expect(jmc?.courses[0]?.fee).toContain("₹28,680");
+    expect(jmc?.sourceUrls.some(url => url.includes("jmc.ac.in"))).toBe(true);
+    expect(JSON.stringify(DELHI_COLLEGE_PROFILES)).not.toContain("Northbridge College");
   });
 });

@@ -46,7 +46,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   });
   const { loading, user } = useAuth();
 
-  useEffect(() => localStorage.setItem(SIDEBAR_WIDTH_KEY, sidebarWidth.toString()), [sidebarWidth]);
+  useEffect(() => {
+    localStorage.setItem(SIDEBAR_WIDTH_KEY, sidebarWidth.toString());
+  }, [sidebarWidth]);
 
   if (loading) return <DashboardLayoutSkeleton />;
   if (!user) {

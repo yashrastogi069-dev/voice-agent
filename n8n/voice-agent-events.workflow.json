@@ -1,0 +1,101 @@
+{
+  "name": "Delhi College Voice Agent — Event Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "voice-agent-events",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "a9ed102b-0778-4f87-9b95-99ca86c7e101",
+      "name": "Voice agent event webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const event = $json.body ?? $json;\nconst allowed = new Set(['call_completed', 'callback_requested', 'dnc_recorded', 'call_failed']);\nif (!allowed.has(event.event)) throw new Error('Unsupported voice-agent event');\nif (!event.eventId || !event.contactId) throw new Error('Missing eventId or contactId');\nreturn [{ json: { ...event, receivedAt: new Date().toISOString() } }];"
+      },
+      "id": "c21d82e9-2178-4cbf-90df-1e497cb96d0e",
+      "name": "Validate event envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [240, 0]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" }, "conditions": [{ "leftValue": "={{ $json.event }}", "rightValue": "callback_requested", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": true, "outputKey": "Callback" },
+            { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" }, "conditions": [{ "leftValue": "={{ $json.event }}", "rightValue": "dnc_recorded", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": true, "outputKey": "DNC" },
+            { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" }, "conditions": [{ "leftValue": "={{ $json.event }}", "rightValue": "call_failed", "operator": { "type": "string", "operation": "equals" } }] }, "renameOutput": true, "outputKey": "Failure" }
+          ]
+        },
+        "options": { "fallbackOutput": "other" }
+      },
+      "id": "5fcc6d67-47a1-4c70-8827-1cd6f03c6a5c",
+      "name": "Route event type",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [480, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Replace this node with your CRM task node.\n// Expected fields: collegeProfileId, contactId, language, programmeInterest, summary, callbackWindow.\nreturn items;"
+      },
+      "id": "5c5fb8e3-3f1e-4a02-93f2-dc78127d7ebd",
+      "name": "Create counsellor callback task",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, -160]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Replace this node with CRM and marketing-suppression updates.\n// Do not re-enable this contact downstream after a DNC event.\nreturn items;"
+      },
+      "id": "e05c8a3e-450e-4f6d-bacf-cb169b7e5b5c",
+      "name": "Propagate do-not-call",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Replace this node with your operator alert integration.\n// Expected fields: providerStatus, errorCode, callId, contactId, collegeProfileId.\nreturn items;"
+      },
+      "id": "681def7d-3f89-48cc-b4b9-1b2b4cc6d347",
+      "name": "Alert call failure",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 160]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"accepted\":true,\"eventId\":\"{{$json.eventId}}\"}",
+        "options": {}
+      },
+      "id": "f15e9a9e-a7d4-4d6e-bc87-f372b93b040c",
+      "name": "Acknowledge event",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [1040, 0]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Voice agent event webhook": { "main": [[{ "node": "Validate event envelope", "type": "main", "index": 0 }]] },
+    "Validate event envelope": { "main": [[{ "node": "Route event type", "type": "main", "index": 0 }]] },
+    "Route event type": { "main": [[{ "node": "Create counsellor callback task", "type": "main", "index": 0 }], [{ "node": "Propagate do-not-call", "type": "main", "index": 0 }], [{ "node": "Alert call failure", "type": "main", "index": 0 }], [{ "node": "Acknowledge event", "type": "main", "index": 0 }]] },
+    "Create counsellor callback task": { "main": [[{ "node": "Acknowledge event", "type": "main", "index": 0 }]] },
+    "Propagate do-not-call": { "main": [[{ "node": "Acknowledge event", "type": "main", "index": 0 }]] },
+    "Alert call failure": { "main": [[{ "node": "Acknowledge event", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "9bbf0fde-9c79-47bf-b26e-c06561ec4b4e",
+  "meta": { "templateCredsSetupCompleted": false },
+  "tags": []
+}
