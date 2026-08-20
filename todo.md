@@ -38,8 +38,8 @@
 - [x] Hide the retired fictional campaign from the operator experience while retaining database history non-destructively.
 - [ ] Verify the final authenticated outbound journey in the browser: synchronize a college profile, approve it, select a permitted contact, start and complete a conversation, and confirm the resulting record and callback state.
 - [ ] Recheck browser-console and network logs after the final authenticated journey and resolve any remaining reproducible runtime failures.
-- [ ] Supersede the single-college content task with fully normalized current official programme, fee, eligibility, and admissions fields for every enabled Delhi college profile, or restrict activation to profiles whose current data is complete.
-- [ ] Remove browser-demo positioning and redesign the dashboard as a production operations console for live outbound calls.
+- [x] Restrict live activation to source-complete college profiles: JMC is eligible; LSR and SRCC remain blocked until current official fee normalization is complete.
+- [x] Remove browser-demo positioning and replace both the visible and RPC simulation paths with a production operations console for controlled live outbound calls.
 - [ ] Select and integrate an India-compatible telephony provider, SIP trunk, and real-time voice-agent runtime for live test calls.
 - [ ] Integrate streaming speech-to-text and natural Indian-English/Hindi text-to-speech, with voice evaluation recordings and pronunciation controls.
 - [ ] Implement interruption-safe turn-taking, voice activity detection, barge-in cancellation, and short-context conversation state for real-time speech.
@@ -62,3 +62,9 @@
 - [x] Produce the decision-grade architecture comparison and record the selected LiveKit SIP path with direct Exotel AgentStream as the validated fallback.
 - [x] Add the self-hostable LiveKit Agents runtime foundation, interruption-safe session configuration, spoken-text formatter, and n8n event workflow export.
 - [x] Add a safe outbound SIP dial adapter with E.164 validation, per-call college metadata, required credential checks, and an explicit live-call activation gate.
+- [x] Complete remaining local production-readiness work that does not depend on external carrier, LiveKit, speech, or n8n credentials.
+- [x] Restore explicit approved-fact retrieval, live-profile activation gates, per-college pronunciation handling, and streaming speech normalization in the real-time agent.
+- [x] Run final application and agent quality checks and prepare a release-ready snapshot; carrier lifecycle tests remain pending external provider configuration.
+- [ ] Verify GitHub authentication, repository owner, repository name, and visibility preferences.
+- [ ] Create the requested GitHub repository and push the complete current project implementation.
+- [ ] Document the ongoing repository update process for future completed changes.

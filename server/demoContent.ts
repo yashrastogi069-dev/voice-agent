@@ -4,6 +4,7 @@ export const DELHI_COLLEGE_PROFILES = [
     institution: "Lady Shri Ram College for Women",
     location: "Lajpat Nagar-IV, New Delhi",
     academicYear: "2026–27",
+    liveActivation: { eligible: false, reason: "Current programmes are verified, but LSR fees must be normalized from a current official source before live use." },
     sourceUrls: [
       "https://lsr.edu.in/admissions/courses-offered/",
       "https://lsr.edu.in/admissions/admission-procedure/",
@@ -31,6 +32,7 @@ export const DELHI_COLLEGE_PROFILES = [
     institution: "Shri Ram College of Commerce",
     location: "University of Delhi North Campus, Maurice Nagar, Delhi",
     academicYear: "2026–27",
+    liveActivation: { eligible: false, reason: "Current programmes are verified, but SRCC fees must be normalized from a current official source before live use." },
     sourceUrls: [
       "https://www.srcc.edu/academics/admissions/admission-procedure/undergraduate",
       "https://www.srcc.edu/academics/courses/bcomh",
@@ -57,6 +59,7 @@ export const DELHI_COLLEGE_PROFILES = [
     institution: "Jesus and Mary College",
     location: "New Delhi",
     academicYear: "2026–27",
+    liveActivation: { eligible: true, reason: "Programme and first-year fee facts are sourced from the official 2026–27 JMC document." },
     sourceUrls: [
       "https://www.jmc.ac.in/admission/collegefees",
       "https://www.jmc.ac.in/uploads/admission/2026-27/JMC%20Seat%20Matrix%20and%20Admission%20fee%20for%20UG%20Admission%202026-27%20(23.06.26).pdf",
@@ -83,9 +86,9 @@ export const DELHI_COLLEGE_PROFILES = [
 
 export const DEMO_COLLEGE_KNOWLEDGE = DELHI_COLLEGE_PROFILES[2];
 
-export const DEMO_APPROVED_SCRIPT = `The assistant must state the selected college profile at the start of a call, share only the selected profile’s official-source information, ask whether the student is exploring the relevant programmes, and offer an admissions-team callback for any detail outside the profile. It must honour a do-not-call request immediately and must not claim admission, placement, rankings, accreditation, scholarship eligibility, or programme availability unless the selected official source states it.`;
+export const OFFICIAL_COLLEGE_APPROVED_SCRIPT = `The assistant must state the selected college profile at the start of a call, share only the selected profile’s official-source information, ask whether the student is exploring the relevant programmes, and offer an admissions-team callback for any detail outside the profile. It must honour a do-not-call request immediately and must not claim admission, placement, rankings, accreditation, scholarship eligibility, or programme availability unless the selected official source states it.`;
 
-export const DEMO_WORKFLOW_POLICIES = {
+export const WORKFLOW_POLICIES = {
   outbound: {
     label: "Outbound student engagement",
     permissions: ["Selected profile knowledge only", "Create callback request", "Record DNC"],

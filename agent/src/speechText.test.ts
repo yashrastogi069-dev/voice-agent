@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createPronunciationHint, prepareSpeechText, spellIndianNumber } from "./speechText";
+import { createPronunciationHint, prepareProfileSpeechText, prepareSpeechText, SpeechTextBuffer, spellIndianNumber } from "./speechText";
 
 describe("spoken college responses", () => {
   it("turns rupee figures into natural spoken Indian currency", () => {
@@ -16,5 +16,13 @@ describe("spoken college responses", () => {
 
   it("spells institution abbreviations as individual letters for speech", () => {
     expect(createPronunciationHint("SRCC and LSR information")).toBe("S R C C and L S R information");
+  });
+
+  it("normalizes profile names and currency across streaming text chunks", () => {
+    expect(prepareProfileSpeechText("srcc-2026", "Shri Ram College of Commerce")).toContain("Shree Ram College of Commerce");
+    const buffer = new SpeechTextBuffer("jmc-2026");
+    buffer.push("The annual fee is ₹28,");
+    expect(buffer.push("680.")).toEqual([]);
+    expect(buffer.flush().join(" ")).toContain("twenty-eight thousand six hundred eighty rupees");
   });
 });

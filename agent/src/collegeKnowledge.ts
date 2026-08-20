@@ -6,6 +6,12 @@ export function getCollegeProfile(profileId?: string): CollegeProfile {
   return DELHI_COLLEGE_PROFILES.find(profile => profile.profileId === profileId) ?? DELHI_COLLEGE_PROFILES[0];
 }
 
+export function getLiveCollegeProfile(profileId?: string): CollegeProfile {
+  const profile = getCollegeProfile(profileId);
+  if (!profile.liveActivation.eligible) throw new Error(`Live activation blocked for ${profile.institution}: ${profile.liveActivation.reason}`);
+  return profile;
+}
+
 export function profileInstructions(profile: CollegeProfile): string {
   const courses = profile.courses.map(course => `- ${course.name}: ${course.duration}. ${course.fee}`).join("\n");
   const approvedDetails = [

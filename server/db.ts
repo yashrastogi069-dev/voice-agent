@@ -10,7 +10,7 @@ import {
   users,
   workflowPolicies,
 } from "../drizzle/schema";
-import { DELHI_COLLEGE_PROFILES, DEMO_APPROVED_SCRIPT, DEMO_WORKFLOW_POLICIES } from "./demoContent";
+import { DELHI_COLLEGE_PROFILES, OFFICIAL_COLLEGE_APPROVED_SCRIPT, WORKFLOW_POLICIES } from "./demoContent";
 import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -68,9 +68,9 @@ export async function getWorkspace(userId: number) {
   return { contacts, campaigns: userCampaigns, records, policies, callbacks };
 }
 
-export async function seedSyntheticDemoWorkspace(userId: number) {
+export async function syncCollegeProfiles(userId: number) {
   const db = await requireDb();
-  const existing = await db.select().from(campaigns).where(and(eq(campaigns.userId, userId), eq(campaigns.isSynthetic, true)));
+  const existing = await db.select().from(campaigns).where(and(eq(campaigns.userId, userId), eq(campaigns.isSynthetic, false)));
   const existingNames = new Set(existing.map(campaign => campaign.name));
   const profilesToAdd = DELHI_COLLEGE_PROFILES.filter(profile => !existingNames.has(`${profile.institution} — 2026–27 outreach`));
 
@@ -79,23 +79,18 @@ export async function seedSyntheticDemoWorkspace(userId: number) {
       userId,
       name: `${profile.institution} — 2026–27 outreach`,
       status: "draft" as const,
-      approvedScript: DEMO_APPROVED_SCRIPT,
+      approvedScript: OFFICIAL_COLLEGE_APPROVED_SCRIPT,
       knowledgeBase: JSON.stringify(profile),
       callingStartHour: 9,
       callingEndHour: 21,
       frequencyCap: 2,
-      isSynthetic: true,
+      isSynthetic: false,
     })));
   }
 
-  await db.insert(studentContacts).values([
-    { userId, fullName: "Aarav Test", phoneNumber: "+91 00000 00001", language: "English", timezone: "Asia/Kolkata", consentStatus: "opt_in", consentSource: "Synthetic demo opt-in", consentScope: "College information demo", consentAt: new Date(), dnc: false, isSynthetic: true },
-    { userId, fullName: "Meera Sample", phoneNumber: "+91 00000 00002", language: "Hindi", timezone: "Asia/Kolkata", consentStatus: "opt_in", consentSource: "Synthetic demo opt-in", consentScope: "College information demo", consentAt: new Date(), dnc: false, isSynthetic: true },
-    { userId, fullName: "Riya Demo", phoneNumber: "+91 00000 00003", language: "English", timezone: "Asia/Kolkata", consentStatus: "opted_out", consentSource: "Synthetic demo opt-out", consentScope: "None", consentAt: new Date(), dnc: true, isSynthetic: true },
-  ]);
-
-  await db.insert(workflowPolicies).values(
-    Object.entries(DEMO_WORKFLOW_POLICIES).map(([workflow, policy]) => ({
+  const existingPolicies = await db.select().from(workflowPolicies).where(eq(workflowPolicies.userId, userId));
+  if (existingPolicies.length === 0) await db.insert(workflowPolicies).values(
+    Object.entries(WORKFLOW_POLICIES).map(([workflow, policy]) => ({
       userId,
       workflow: workflow as "outbound" | "inbound" | "delegated",
       policyJson: JSON.stringify(policy),
@@ -165,7 +160,7 @@ export async function approveCampaign(userId: number, campaignId: number) {
   await db.update(campaigns).set({ status: "approved", approvedAt: new Date() }).where(and(eq(campaigns.id, campaignId), eq(campaigns.userId, userId)));
 }
 
-export async function getSimulationContext(userId: number, campaignId: number, contactId: number) {
+export async function getLiveCallContext(userId: number, campaignId: number, contactId: number) {
   const db = await requireDb();
   const [campaign] = await db.select().from(campaigns).where(and(eq(campaigns.id, campaignId), eq(campaigns.userId, userId))).limit(1);
   const [contact] = await db.select().from(studentContacts).where(and(eq(studentContacts.id, contactId), eq(studentContacts.userId, userId))).limit(1);
@@ -183,29 +178,4 @@ export async function recordPolicyAudit(input: {
 }) {
   const db = await requireDb();
   await db.insert(policyAudits).values(input);
-}
-
-export async function saveSimulation(input: {
-  userId: number;
-  campaignId: number;
-  contactId: number;
-  outcome: "interested" | "callback" | "not_interested" | "dnc";
-  transcript: string;
-  summary: string;
-}) {
-  const db = await requireDb();
-  const priority = input.outcome === "callback" || input.outcome === "dnc";
-  await db.insert(callRecords).values({ ...input, priority, isSynthetic: true });
-  if (input.outcome === "dnc") {
-    await db.update(studentContacts).set({ dnc: true, consentStatus: "opted_out" }).where(and(eq(studentContacts.id, input.contactId), eq(studentContacts.userId, input.userId)));
-  }
-  if (input.outcome === "callback") {
-    await db.insert(callbackRequests).values({
-      userId: input.userId,
-      campaignId: input.campaignId,
-      contactId: input.contactId,
-      note: input.summary,
-      status: "queued",
-    });
-  }
 }

@@ -34,3 +34,30 @@ export function createPronunciationHint(text: string): string {
     .replace(/LSR/g, "L S R")
     .replace(/JMC/g, "J M C");
 }
+
+const PROFILE_PRONUNCIATION: Record<string, Array<[RegExp, string]>> = {
+  "lsr-2026": [[/Lady Shri Ram College for Women/gi, "Lady Shree Ram College for Women"], [/Lajpat Nagar-IV/gi, "Lajpat Nagar Four"]],
+  "srcc-2026": [[/Shri Ram College of Commerce/gi, "Shree Ram College of Commerce"], [/Maurice Nagar/gi, "Morris Nagar"]],
+  "jmc-2026": [[/B\.Voc\./gi, "Bachelor of Vocation"]],
+};
+
+export function prepareProfileSpeechText(profileId: string, text: string): string {
+  return (PROFILE_PRONUNCIATION[profileId] ?? []).reduce((result, [pattern, replacement]) => result.replace(pattern, replacement), createPronunciationHint(text));
+}
+
+export class SpeechTextBuffer {
+  private buffer = "";
+  constructor(private readonly profileId: string) {}
+  push(chunk: string): string[] {
+    this.buffer += chunk;
+    const pieces = this.buffer.split(/(?<=[.!?])\s+/);
+    this.buffer = pieces.pop() ?? "";
+    return pieces.filter(Boolean).map(piece => prepareProfileSpeechText(this.profileId, piece));
+  }
+  flush(): string[] {
+    if (!this.buffer.trim()) return [];
+    const final = prepareProfileSpeechText(this.profileId, this.buffer);
+    this.buffer = "";
+    return [final];
+  }
+}
