@@ -1,0 +1,16 @@
+node_modules
+.git
+.manus-logs
+.env
+.env.*
+dist
+dist-agent
+coverage
+console-recordings
+*.log
+*.gz
+*.tgz
+.cache
+.idea
+.vscode
+Downloads

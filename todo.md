@@ -102,3 +102,7 @@
 - [ ] Diagnose and eliminate mid-conversation silent turns after caller speech; verify STT, LLM, TTS, and audio publication recover without the agent leaving the room.
 - [ ] Expand approved student-information coverage and retrieval routing beyond the current narrow course suggestions; validate diverse admissions, academic, financial, campus, and student-support questions with real worker turns.
 - [ ] Deploy the LiveKit worker durably in an India-near production region; do not treat the temporary sandbox-registered worker as a production deployment.
+- [ ] Create and validate a durable LiveKit Cloud Mumbai worker deployment before any real carrier call; retain `LIVE_CALLS_ENABLED=false` until all controlled-test gates pass.
+- [ ] Configure an India-compatible SIP carrier, verified caller identity, permitted Indian test number, and consent-controlled route for one approved real phone-call validation.
+- [ ] Use the connected personal browser session for LiveKit Cloud authentication and Mumbai deployment management; do not rely on the unauthenticated sandbox browser.
+- [ ] Complete the full end-to-end production path: durable Mumbai worker, browser audio acceptance, India carrier connectivity, one permitted real-call validation, and post-call automation readiness without enabling unapproved outbound dialing.
