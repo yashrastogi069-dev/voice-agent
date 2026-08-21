@@ -35,7 +35,9 @@ function profileIdFromRoom(ctx: JobContext): string | undefined {
 export default defineAgent<AgentProcessData>({
   prewarm: (proc) => {
     const tts = createTts();
-    tts.prewarm();
+    if (process.env.LIVEKIT_TTS_PREWARM === "true") {
+      tts.prewarm();
+    }
     proc.userData.tts = tts;
   },
   entry: async (ctx: JobContext) => {

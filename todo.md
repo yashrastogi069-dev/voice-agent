@@ -96,3 +96,5 @@
 - [ ] Send realistic prospective-student questions through the running LiveKit worker and use the live transcripts, tool traces, and TTS timings to drive each repair cycle.
 - [x] Prevent the live session from closing on the default 15-second user-away timeout before a student can respond to the opening greeting; validate with a participant-backed audio turn.
 - [ ] Eliminate the observed cross-region LiveKit worker join delay by running the durable worker in a region near the India/NZ call path; validate initial greeting startup against the Sydney Agent Console.
+- [ ] Run a real authenticated-browser LiveKit conversation with realistic student turns; inspect transcript, timing, Hindi policy, grounding, interruption, and audio continuity before closing the quality loop.
+- [ ] Defer all dashboard work until explicitly requested; prove the LiveKit worker independently registers, accepts a job, joins a room, and publishes an agent audio track before further console conversation testing.
