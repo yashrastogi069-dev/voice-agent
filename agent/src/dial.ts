@@ -15,9 +15,11 @@ export type OutboundDialPlan = {
 };
 
 const E164 = /^\+[1-9]\d{7,14}$/;
+const INDIA_E164 = /^\+91\d{10}$/;
 
 export function buildOutboundDialPlan(input: OutboundDialInput): OutboundDialPlan {
   if (!E164.test(input.phoneNumber)) throw new Error("A valid E.164 phone number is required.");
+  if (!INDIA_E164.test(input.phoneNumber)) throw new Error("Outbound destination must be an Indian E.164 (+91) number.");
   if (!input.contactId || !input.collegeProfileId || !input.campaignId) throw new Error("Contact, college profile, and campaign identifiers are required.");
   const nonce = crypto.randomUUID().replaceAll("-", "").slice(0, 10);
   const participantIdentity = `caller-${input.contactId}-${nonce}`;
@@ -39,6 +41,14 @@ function requiredEnv(name: string): string {
   return value;
 }
 
+function requiredIndiaCallerId(): string {
+  const callerId = requiredEnv("LIVEKIT_CALLER_ID");
+  if (!INDIA_E164.test(callerId)) {
+    throw new Error("LIVEKIT_CALLER_ID must be an approved Indian E.164 (+91) caller ID.");
+  }
+  return callerId;
+}
+
 /**
  * Places a real outbound SIP call only when LIVE_CALLS_ENABLED=true. The UI must perform its own
  * consent and campaign checks before this layer is invoked; this adapter is the final provider call.
@@ -48,6 +58,7 @@ export async function placeLiveOutboundCall(input: OutboundDialInput) {
     throw new Error("Live outbound calls are disabled. Set LIVE_CALLS_ENABLED=true only after controlled-call approval.");
   }
 
+  const callerId = requiredIndiaCallerId();
   const livekitUrl = requiredEnv("LIVEKIT_URL");
   const apiKey = requiredEnv("LIVEKIT_API_KEY");
   const apiSecret = requiredEnv("LIVEKIT_API_SECRET");
@@ -65,7 +76,7 @@ export async function placeLiveOutboundCall(input: OutboundDialInput) {
   });
 
   const participant = await sip.createSipParticipant(trunkId, input.phoneNumber, plan.roomName, {
-    fromNumber: process.env.LIVEKIT_CALLER_ID,
+    fromNumber: callerId,
     participantIdentity: plan.participantIdentity,
     participantName: input.contactName ?? "Student",
     participantMetadata: plan.participantMetadata,

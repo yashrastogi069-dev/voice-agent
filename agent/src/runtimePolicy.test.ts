@@ -28,6 +28,10 @@ describe("real-time conversation policy", () => {
     expect(LIVE_TURN_HANDLING.endpointing?.maxDelay).toBeLessThanOrEqual(1200);
   });
 
+  it("waits for a completed user turn before generating a reply so approved-fact routing can take precedence", () => {
+    expect(LIVE_TURN_HANDLING.preemptiveGeneration).toEqual({ enabled: false });
+  });
+
   it("rejects text that should not be sent directly to a speaking engine", () => {
     expect(assessSpeechResponse("The first-year fee is twenty-eight thousand six hundred eighty rupees.")).toEqual([]);
     expect(assessSpeechResponse("Read https://college.example/admissions and email admissions@example.edu.")).toEqual(expect.arrayContaining([

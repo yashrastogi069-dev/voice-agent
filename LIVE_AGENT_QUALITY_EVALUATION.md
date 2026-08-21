@@ -45,3 +45,51 @@ The participant-backed WebRTC test successfully joins a temporary room, dispatch
 The authenticated LiveKit Agent Console session was hosted in `osydney1a`, while the sandbox-hosted self-managed worker registered in `odubai1a`. The worker received the job immediately but did not complete `ctx.connect()` for about 18 seconds. Because the fixed greeting correctly waits for room connection, the user experienced the console as stalled. Once joined, the worker published the Hindi greeting successfully and the console showed two participants, the ElevenLabs TTS model, and the expected transcript. Therefore, this incident is a **worker-placement and room-join problem**, not a Hindi, grounding, LLM, rupee-normalization, or TTS-stream failure.
 
 The corrective production requirement is to run the durable worker in LiveKit Cloud Mumbai (`ap-south`) or equivalent India-local infrastructure, not in a transient sandbox whose LiveKit connection is routed through another region. The corresponding deployment procedure is recorded in `REGIONAL_WORKER_RUNBOOK.md`. No PSTN dialing has been enabled.
+
+## Mumbai Cloud Deployment Validation — 21 August 2026
+
+The durable LiveKit Cloud worker was created as agent `CA_spsyvoM3MQec` in `ap-south` (Mumbai). Its deployed runtime registered as `delhi-college-outbound-agent` on the LiveKit Cloud **India West** node using LiveKit Agents SDK `1.7.0`. This replaces the temporary sandbox worker for all further room tests.
+
+| Criterion | Measured result | Verdict |
+| --- | --- | --- |
+| Deployment build | Cloud container build completed successfully from the validated worker Dockerfile. | Pass |
+| Region | Agent status reports `ap-south`; worker registration reports India West. | Pass |
+| Dispatch | Explicit dispatch `AD_sGgpPr9Qj6LW` reached the deployed worker. | Pass |
+| Agent join | Agent audio track subscribed 2,230 ms after dispatch. | Pass |
+| Greeting audio | First actual audio frame reached the listener 2,236 ms after dispatch, with no stream error. | Pass |
+| Session retention | After the listener disconnected, one agent participant remained in the room. | Pass |
+
+The probe received eight initial greeting frames before its deterministic cleanup. This validates Cloud room join, audio-track publication, and the corrected close-on-disconnect setting, but **does not yet validate a complete multi-turn human speech conversation**. SIP/carrier dialing remains disabled.
+
+## Authenticated Microphone Conversation Finding — 21 August 2026
+
+The Mumbai Cloud worker received a continuous authenticated Sydney Console microphone conversation with recorded STT, LLM, TTS, and audio delivery. Console metrics for the observed session were approximately **1,059 ms** average LLM time-to-first-token and **3,113 ms** average end-to-end latency. The agent stayed connected and returned audio, but the answers were not sufficiently useful for a prospective student.
+
+| Student turn | Observed failure | Required repair |
+| --- | --- | --- |
+| “B.Com Honours ki fees aur scholarship…” | Repeated a short fee-plus-generic-assistance sentence and referred individual eligibility to “our team.” | Speak all approved scholarship, fee-concession, Student’s Aid Fund, and Book Bank facts before the individual boundary. |
+| “Yes, please. Kaise pay karni hai?” | Claimed no confirmed payment method because the follow-up relied on the prior fee context. | Resolve short follow-ups from bounded conversation context and use the approved online-payment fact. |
+| “To ye kitne saal ka course hai?” | Returned only that programmes are undergraduate, with no programme-specific duration handling. | Add only source-verified programme-duration facts or state the confirmed boundary clearly. |
+| “Admission process ke baare mein batao.” | Redirected to external documents despite approved CUET-UG and CSAS facts. | Deliver the approved CUET-UG and DU CSAS process directly, with no early website or human referral. |
+
+This session proves transport and speech continuity, but it **fails conversation-depth acceptance**. The next repair therefore targets deterministic, source-grounded conversational paths and contextual follow-up resolution rather than model, TTS, or regional-worker stability.
+
+## Detailed-Route Activation Failure — 21 August 2026
+
+After the first detailed-route rollout, the authenticated microphone test still showed `listening → thinking → speaking` model turns for every targeted question. The Console recorded the correct user transcripts but none of the expected deterministic details: the agent referred the student to the DU bulletin, returned a generic fee-and-assistance sentence, claimed that payment and duration were unconfirmed, offered a counsellor call for payment, and reduced the course catalogue to a partial list.
+
+This proves that the route-selection code was not taking control of the active speech turn. The next repair must verify the actual runtime hook contract and either correct the scheduling mechanism or enforce the reply through the supported session API. The outcome is classified as a **worker behavior failure**, not a microphone, STT, TTS, latency, or source-data failure.
+
+## LiveKit Inference Gateway Diagnosis — 21 August 2026
+
+The detailed-route and concise answer-first code are not the cause of the latest speech failure. After the worker was verified healthy in Mumbai and restarted, an authenticated diagnostic opened the exact `wss://agent-gateway.livekit.cloud/v1/tts` endpoint used by the LiveKit Agents SDK. The gateway returned HTTP `429` before either speech stream could start.
+
+| Gateway field | Observed value | Interpretation |
+| --- | --- | --- |
+| `type` | `inference_quota_exceeded` | The rejection is an explicit Inference quota state, not a transport outage. |
+| `quota_type` | `tts` | TTS cannot create a streaming connection. |
+| `category` | `MaxGatewayCredits` | The governing limit is the project’s gateway-credit allowance. |
+| `current_usage` / `remaining_limit` | `0` / `0` | The rejection is not caused by active concurrent TTS connections. |
+| Provider hint | `LLM token credit quota exhausted. Wait for the next billing cycle or upgrade your plan.` | LiveKit identifies the free-tier Inference-credit allowance as exhausted. |
+
+The same endpoint failure affected STT and TTS in fresh Cloud Console rooms, while LiveKit Cloud continued to report the Mumbai worker as running with low CPU and memory use. This is therefore an **external LiveKit Inference quota dependency**, not a failure in the worker code, the Mumbai deployment, or the future SIP/carrier configuration. The service cannot deliver a useful phone call until the allowance resets or a separately credentialed speech-provider path is deliberately configured. Carrier dialing remains disabled.

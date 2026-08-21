@@ -4,6 +4,9 @@ export const JMC_STUDENT_FAQ = {
   minoritySeats: "JMC states that, as a minority women’s institution, 50 percent of undergraduate seats are reserved for Christian Minority Women; the remaining 50 percent are handled directly by the University of Delhi.",
   feePayment: "JMC states that college fees are accepted through its online payment system.",
   feeScope: "JMC publishes first-year annual fees excluding examination fees. The approved JMC facts do not confirm a separate examination-fee amount.",
+  programmeDuration: "JMC states that all undergraduate degree courses except B.El.Ed. are taught in four years in semester mode; its B.El.Ed. listing is also a four-year course.",
+  programmeCatalogue: "JMC's official undergraduate course page lists B.A. (Hons.) Economics, English, Hindi, History, Political Science, Psychology and Sociology; B.A. Programme discipline combinations; B.Com. (Hons.); B.Com.; B.Sc. (Hons.) Mathematics; B.El.Ed.; and B.Voc. Healthcare Management and Retail Management & IT.",
+  feeBands: "For the published 2026–27 first-year annual fees excluding examination fee, the approved JMC fee list includes ₹28,680 for many listed B.A., B.Com., B.Com. (Hons.) and B.Sc. (Hons.) Mathematics entries; ₹29,180 for B.A. (Hons.) Psychology and selected psychology combinations; ₹37,070 for each listed B.Voc. programme; ₹33,730 for B.El.Ed.; and ₹51,730 for ITEP.",
   scholarships: "JMC states that a number of scholarship opportunities are available, recognising student merit and talent, and that applications may be made at the beginning of the academic year.",
   financialAssistance: "JMC states that students needing financial assistance may apply for fee concession on the prescribed Accounts Office form. Until a concession is sanctioned, fees must be paid; if sanctioned, a refund of eligible payments made at the beginning of the year may subsequently be claimed. JMC also lists support through its Student's Aid Fund and a Book Bank Scheme for needy students.",
   financialAssistanceBoundary: "The approved JMC facts do not confirm an individual student's eligibility, award amount, or the current academic year's application deadline.",
@@ -22,6 +25,7 @@ export const JMC_STUDENT_FAQ = {
     "https://www.jmc.ac.in/admission/ugadmission",
     "https://www.jmc.ac.in/admission/collegefees",
     "https://www.jmc.ac.in/admission/scholarshipsfinancialassistance",
+    "https://www.jmc.ac.in/academics/ugcourses",
     "https://admission.uod.ac.in/",
   ],
 } as const;

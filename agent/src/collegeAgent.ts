@@ -6,7 +6,7 @@ import { z } from "zod";
 import { profileInstructions, type CollegeProfile } from "./collegeKnowledge";
 import { buildVoiceAgentEvent, publishVoiceAgentEvent } from "./events";
 import { BoundedConversationState, LIVE_TURN_HANDLING } from "./runtimePolicy";
-import { buildTurnGrounding, retrieveApprovedFacts } from "./factRetrieval";
+import { buildApprovedStudentConversationReply, buildTurnGrounding, retrieveApprovedFacts } from "./factRetrieval";
 import { SpeechTextBuffer } from "./speechText";
 
 export class CollegeAdmissionsAgent extends voice.Agent {
@@ -78,6 +78,30 @@ export class CollegeAdmissionsAgent extends voice.Agent {
       role: "developer",
       content: buildTurnGrounding(this.profile, newMessage.textContent),
     });
+  }
+
+  override async llmNode(chatCtx: ChatContext, toolCtx: llm.ToolContext, modelSettings: ModelSettings) {
+    const studentMessages = chatCtx.items
+      .filter((item): item is ChatMessage => "role" in item && item.role === "user")
+      .map(item => item.textContent?.trim())
+      .filter((text): text is string => Boolean(text));
+    const question = studentMessages.at(-1);
+    const priorStudentTurns = studentMessages.slice(0, -1);
+    const approvedReply = question
+      ? buildApprovedStudentConversationReply(this.profile, question, priorStudentTurns)
+      : null;
+
+    if (approvedReply) {
+      console.info("college_agent_llm_route", {
+        profileId: this.profile.profileId,
+        matchedApprovedConversationRoute: true,
+        priorStudentTurnCount: priorStudentTurns.length,
+        responseCharacters: approvedReply.length,
+      });
+      return ReadableStream.from([approvedReply]);
+    }
+
+    return CollegeAdmissionsAgent.default.llmNode(this, chatCtx, toolCtx, modelSettings);
   }
 
   override async ttsNode(text: ReadableStream<string> | AsyncIterable<string>, modelSettings: ModelSettings) {

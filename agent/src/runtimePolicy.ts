@@ -12,7 +12,10 @@ export const LIVE_TURN_HANDLING: Partial<TurnHandlingOptions> = {
     resumeFalseInterruption: false,
     discardAudioIfUninterruptible: true,
   },
-  preemptiveGeneration: { enabled: true },
+  // Keep routing deterministic for safety-critical approved-fact turns. The
+  // model must not pre-generate a generic reply before the agent can select
+  // the source-grounded conversational path for a completed student turn.
+  preemptiveGeneration: { enabled: false },
 };
 
 export const LIVE_USER_AWAY_TIMEOUT_SECONDS = 45;

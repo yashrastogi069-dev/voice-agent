@@ -97,12 +97,30 @@
 - [x] Prevent the live session from closing on the default 15-second user-away timeout before a student can respond to the opening greeting; validate with a participant-backed audio turn.
 - [ ] Eliminate the observed cross-region LiveKit worker join delay by running the durable worker in a region near the India/NZ call path; validate initial greeting startup against the Sydney Agent Console.
 - [ ] Run a real authenticated-browser LiveKit conversation with realistic student turns; inspect transcript, timing, Hindi policy, grounding, interruption, and audio continuity before closing the quality loop.
-- [ ] Defer all dashboard work until explicitly requested; prove the LiveKit worker independently registers, accepts a job, joins a room, and publishes an agent audio track before further console conversation testing.
-- [ ] Diagnose and eliminate the reported live-agent mid-session departure; verify the worker remains connected through a controlled conversation unless an explicit caller or room disconnect occurs.
+- [x] Defer all dashboard work until explicitly requested; prove the LiveKit worker independently registers, accepts a job, joins a room, and publishes an agent audio track before further console conversation testing.
+- [x] Diagnose and eliminate the reported live-agent mid-session departure; verify the worker remains connected through a controlled conversation unless an explicit caller or room disconnect occurs.
 - [ ] Diagnose and eliminate mid-conversation silent turns after caller speech; verify STT, LLM, TTS, and audio publication recover without the agent leaving the room.
 - [ ] Expand approved student-information coverage and retrieval routing beyond the current narrow course suggestions; validate diverse admissions, academic, financial, campus, and student-support questions with real worker turns.
-- [ ] Deploy the LiveKit worker durably in an India-near production region; do not treat the temporary sandbox-registered worker as a production deployment.
-- [ ] Create and validate a durable LiveKit Cloud Mumbai worker deployment before any real carrier call; retain `LIVE_CALLS_ENABLED=false` until all controlled-test gates pass.
+- [x] Deploy the LiveKit worker durably in an India-near production region; do not treat the temporary sandbox-registered worker as a production deployment.
+- [x] Create and validate a durable LiveKit Cloud Mumbai worker deployment before any real carrier call; retain `LIVE_CALLS_ENABLED=false` until all controlled-test gates pass.
 - [ ] Configure an India-compatible SIP carrier, verified caller identity, permitted Indian test number, and consent-controlled route for one approved real phone-call validation.
-- [ ] Use the connected personal browser session for LiveKit Cloud authentication and Mumbai deployment management; do not rely on the unauthenticated sandbox browser.
+- [x] Use the connected personal browser session for LiveKit Cloud authentication and Mumbai deployment management; do not rely on the unauthenticated sandbox browser.
 - [ ] Complete the full end-to-end production path: durable Mumbai worker, browser audio acceptance, India carrier connectivity, one permitted real-call validation, and post-call automation readiness without enabling unapproved outbound dialing.
+- [ ] Repair the live scholarship-response gap: give approved JMC scholarship, fee-concession, Student’s Aid Fund, and Book Bank facts before any individual-eligibility referral.
+- [ ] Re-run the authenticated Sydney Agent Console test against the Mumbai Cloud worker, record room-connect and first-greeting timings, and compare them to the prior approximately 18-second join delay against an explicit acceptance threshold.
+- [ ] Replace the shallow three-topic live conversation pattern with detailed, approved Hindi-first student-admissions answer paths covering programmes, fees and scope, payment, CUET/CSAS process, eligibility boundaries, scholarships, location, and a relevant non-escalatory next question.
+- [ ] Verify that every detailed student-journey route activates in real microphone turns, then close the observed gaps in full course catalogue, duration, fee scope, payment flow, admission milestones, scholarship support, and contextual follow-ups without fallback to generic model replies.
+- [ ] Resolve the LiveKit Cloud artifact-version mismatch: prove the active Mumbai worker contains the detailed conversation code and emits a unique deploy marker before any further microphone acceptance test.
+- [ ] Correct deterministic programme matching so each named programme, especially B.Com. Honours, receives its own verified fee and details rather than the first catalogue entry.
+- [ ] Change detailed student-information delivery to concise, answer-first voice turns: state the requested facts, pause naturally, and expose further approved detail only on a follow-up request or explicit interest signal.
+- [ ] Recover the Mumbai Cloud LiveKit Inference connection failure affecting both STT and TTS; verify a fresh room can initialize, hear the caller, and speak without session closure.
+- [ ] Complete carrier/SIP readiness for permitted India calling while retaining consent gates, IST calling hours, DNC controls, and `LIVE_CALLS_ENABLED=false` until a controlled test is explicitly approved.
+- [ ] Run and document one explicitly user-approved, permitted Indian-number real-call test only after the worker has passed speech, knowledge, interruption, and audio-publication acceptance checks.
+- [x] Keep the deployed Mumbai worker available while the LiveKit Inference HTTP 429 allowance issue is deferred; do not attempt a real call until STT/TTS becomes available again.
+- [x] Identify the exact LiveKit Inference HTTP 429 cause using raw gateway response evidence; distinguish allowance exhaustion from concurrency, request-rate, or project-configuration limits before applying any remedy.
+- [x] Enforce India-only E.164 destination and caller-ID validation at the final SIP dial layer, independently of UI and campaign controls.
+- [x] Verify the newly rented LiveKit phone number’s country, activation status, supported use, and compatibility with the India outbound-call route before retaining or revoking it.
+- [x] Rule out any attempt to originate an India call from the current US inbound rental unless an approved India outbound SIP route and working speech path are verified first.
+- [x] Retain the `+1 240 369 8658` US local LiveKit number solely as an unconfigured future inbound-test resource; it must not be used as an outbound caller identity.
+- [ ] Give the user a current beginner-safe, free-first Exotel vSIP/AgentStream request path from their existing account, including only the credentials and approvals required for one controlled India test route.
+- [ ] Research and compare legitimate non-Exotel, free-first real-call test routes that do not require the user to submit business KYC, clearly separating account verification, payment, and geography constraints.
