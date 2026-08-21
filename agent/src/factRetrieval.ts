@@ -65,6 +65,9 @@ export function retrieveApprovedFacts(profile: CollegeProfile, question: string)
   if (isJmc && /exam fee|examination fee|परीक्षा शुल्क|एग्जाम फीस/.test(value)) return { supported: true, callbackRequired: false, topic: "exam-fee", facts: [JMC_STUDENT_FAQ.feeScope] };
   if (isJmc && /instal+ment|किस्त/.test(value)) return { supported: true, callbackRequired: true, topic: "fees", facts: [JMC_STUDENT_FAQ.feeScope] };
   if (isJmc && /how.*pay|payment method|online payment|payment.*कैसे|कैसे.*पे|भुगतान.*कैसे|online.*(fee|फीस|pay)|(?:fee|फीस).*(online|भर|pay)|फीस.*भुगतान/.test(value)) return { supported: true, callbackRequired: false, topic: "fee-payment", facts: [JMC_STUDENT_FAQ.feePayment, JMC_STUDENT_FAQ.feeScope] };
+  if (isJmc && /scholarship|fee concession|student.?aid|book bank|financial assistance|financial aid|freeship|स्कॉलरशिप|छात्रवृत्ति|वित्तीय.?सहायता|आर्थिक.?सहायता|फीस.?रियायत|फीस.?माफी|बुक.?बैंक/.test(value)) {
+    return { supported: true, callbackRequired: true, topic: "financial-assistance", facts: [JMC_STUDENT_FAQ.scholarships, JMC_STUDENT_FAQ.financialAssistance, JMC_STUDENT_FAQ.financialAssistanceBoundary] };
+  }
   if (/fee|fees|cost|price|payment|rupee|₹|फीस|शुल्क|कितनी|कितना|कीमत|पैसे|how much/.test(value)) {
     const facts = isJmc ? jmcFeeFacts(question) : hasSpecificCourse ? [`${course.name}: ${course.fee}`] : profile.courses.map(item => `${item.name}: ${item.fee}`);
     return { supported: true, callbackRequired: /confirm|exact|instalment|सटीक|कन्फर्म/.test(value), topic: "fees", facts };

@@ -82,17 +82,17 @@
 - [x] Prepare and validate a free LiveKit WebRTC test of the real-time agent from a controlled browser or mobile device before any PSTN provider is configured.
 - [x] Collect the newly created LiveKit project URL, API key, and API secret through secure settings and validate them with a read-only LiveKit room-list test.
 - [ ] Improve Hindi voice quality and expand verified college-information coverage based on the successful free LiveKit console test before any mobile-call carrier is configured.
-- [ ] Strengthen grounded answer coverage, short-term context, and callback behavior so the agent answers useful approved questions before offering a counsellor callback.
+- [x] Strengthen grounded answer coverage, short-term context, and callback behavior so the agent answers useful approved questions before offering a counsellor callback.
 - [ ] Tune natural Indian Hindi and Indian-English speech quality and latency using the accessible LiveKit inference configuration.
 - [ ] Prepare durable deployment for the LiveKit agent worker and post-call n8n automation; keep carrier dialing disabled until quality and provider gates pass.
 - [ ] Diagnose and correct observed LiveKit lag, weak Indian voice quality, shallow context, incomplete answers, and premature callback behavior using runtime and session evidence before deployment.
-- [ ] Expand source-grounded student FAQ coverage so supported admissions questions receive useful answers before counsellor escalation.
+- [x] Expand source-grounded student FAQ coverage so supported admissions questions receive useful answers before counsellor escalation.
 - [ ] Repair speech stalls, lost audio, and rupee pronunciation; start in Hindi, switch only when the caller uses English, and suppress early website or counsellor escalation.
 - [x] Retire the unavailable Sarvam-first path and replace it with LiveKit’s Hindi-capable ElevenLabs inference configuration for the New Zealand-accessible free-tier browser test.
 - [x] Replace the unavailable Sarvam path with a New Zealand-accessible free-tier Hindi/Hinglish speech configuration: ElevenLabs Scribe realtime STT and Eleven Flash multilingual TTS through LiveKit Inference.
 - [ ] Run and document an in-depth live-agent quality evaluation covering latency, audio continuity, Hindi-first behavior, rupee speech, grounded answers, delayed escalation, and interruption recovery.
 - [ ] Execute iterative real-worker test, measurement, repair, and regression cycles across voice quality, language behavior, grounding, barge-in, DNC safety, and resource stability before deployment.
-- [ ] Evaluate agent knowledge as prospective students across admissions, programmes, fees, payments, CUET/CSAS, minority seats, eligibility, location, objections, and unsupported questions; add only verified facts and regression tests for observed gaps.
+- [x] Evaluate agent knowledge as prospective students across admissions, programmes, fees, payments, CUET/CSAS, minority seats, eligibility, location, objections, and unsupported questions; add only verified facts and regression tests for observed gaps.
 - [ ] Send realistic prospective-student questions through the running LiveKit worker and use the live transcripts, tool traces, and TTS timings to drive each repair cycle.
-- [ ] Prevent the live session from closing on the default 15-second user-away timeout before a student can respond to the opening greeting; validate with a participant-backed audio turn.
+- [x] Prevent the live session from closing on the default 15-second user-away timeout before a student can respond to the opening greeting; validate with a participant-backed audio turn.
 - [ ] Eliminate the observed cross-region LiveKit worker join delay by running the durable worker in a region near the India/NZ call path; validate initial greeting startup against the Sydney Agent Console.

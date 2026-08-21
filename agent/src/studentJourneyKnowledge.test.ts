@@ -26,10 +26,21 @@ describe("prospective-student JMC knowledge journey", () => {
     expect(result.facts.join(" ")).toContain(expected);
   });
 
-  it("keeps changing eligibility, instalment, and scholarship questions grounded without inventing an answer", () => {
+  it("keeps changing eligibility and instalment questions grounded without inventing an answer", () => {
     expect(retrieveApprovedFacts(jmc, "क्या मैं instalment में fees pay कर सकती हूँ?")).toMatchObject({ supported: true, callbackRequired: true, topic: "fees" });
     expect(retrieveApprovedFacts(jmc, "Psychology के लिए exact eligibility क्या है?")).toMatchObject({ supported: true, callbackRequired: true, topic: "eligibility" });
-    expect(retrieveApprovedFacts(jmc, "क्या मेरे लिए scholarship available है?")).toMatchObject({ supported: true, callbackRequired: true, topic: "scholarship" });
+  });
+
+  it("answers JMC scholarship and financial-assistance questions with approved facts before any individual confirmation", () => {
+    const scholarship = retrieveApprovedFacts(jmc, "क्या मेरे लिए scholarship available है?");
+    expect(scholarship).toMatchObject({ supported: true, callbackRequired: true, topic: "financial-assistance" });
+    expect(scholarship.facts.join(" ")).toContain("merit and talent");
+    expect(scholarship.facts.join(" ")).toContain("Student's Aid Fund");
+
+    const concession = retrieveApprovedFacts(jmc, "फीस रियायत या financial assistance मिलती है?");
+    expect(concession).toMatchObject({ supported: true, callbackRequired: true, topic: "financial-assistance" });
+    expect(concession.facts.join(" ")).toContain("fee concession");
+    expect(concession.facts.join(" ")).toContain("Book Bank Scheme");
   });
 
   it("does not fabricate placement, hostel, ranking, or personal-admission outcomes", () => {
