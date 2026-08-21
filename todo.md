@@ -124,3 +124,4 @@
 - [x] Retain the `+1 240 369 8658` US local LiveKit number solely as an unconfigured future inbound-test resource; it must not be used as an outbound caller identity.
 - [ ] Give the user a current beginner-safe, free-first Exotel vSIP/AgentStream request path from their existing account, including only the credentials and approvals required for one controlled India test route.
 - [ ] Research and compare legitimate non-Exotel, free-first real-call test routes that do not require the user to submit business KYC, clearly separating account verification, payment, and geography constraints.
+- [x] Review and synchronize the complete current project state to the connected GitHub repository, including the latest diagnostics, safeguards, tests, and research documentation.
