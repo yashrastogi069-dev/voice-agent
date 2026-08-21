@@ -1,9 +1,24 @@
 import { describe, expect, it } from "vitest";
-import { assessSpeechResponse, BoundedConversationState, LIVE_TURN_HANDLING, LIVE_USER_AWAY_TIMEOUT_SECONDS } from "./runtimePolicy";
+import {
+  assessSpeechResponse,
+  BoundedConversationState,
+  LIVE_ROOM_INPUT_OPTIONS,
+  LIVE_TURN_HANDLING,
+  LIVE_USER_AWAY_TIMEOUT_SECONDS,
+  LIVE_WORKER_IDLE_PROCESSES,
+} from "./runtimePolicy";
 
 describe("real-time conversation policy", () => {
   it("keeps enough post-greeting silence for a normal phone caller to begin speaking", () => {
     expect(LIVE_USER_AWAY_TIMEOUT_SECONDS).toBe(45);
+  });
+
+  it("does not end a live agent session solely because a caller briefly disconnects", () => {
+    expect(LIVE_ROOM_INPUT_OPTIONS.closeOnDisconnect).toBe(false);
+  });
+
+  it("keeps a single warm worker process in the constrained live-test environment", () => {
+    expect(LIVE_WORKER_IDLE_PROCESSES).toBe(1);
   });
 
   it("keeps interruption enabled and avoids resuming obsolete speech after a caller takes the turn", () => {

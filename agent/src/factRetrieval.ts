@@ -81,6 +81,17 @@ export function retrieveApprovedFacts(profile: CollegeProfile, question: string)
       : [`${course.name}: ${course.eligibility}`];
     return { supported: true, callbackRequired: true, topic: "eligibility", facts };
   }
+  if (isJmc && /कुछ और|और बताइ|और बता|थोड़ा और|more (?:information|details)|something else|tell me more/.test(value)) {
+    return {
+      supported: true,
+      callbackRequired: false,
+      topic: "overview",
+      facts: [
+        "JMC's approved 2026–27 student information covers undergraduate programmes, first-year fees, CUET UG and CSAS admissions, online fee payment, Christian Minority Women seat policy, location, scholarships, fee concession, Student's Aid Fund, and the Book Bank Scheme.",
+        "JMC has approved fee-document entries for Economics, Psychology, B.Com. and B.Com. Honours, Mathematics, two B.Voc. programmes, B.El.Ed., and ITEP.",
+      ],
+    };
+  }
   if (/scholar|financial aid|freeship|स्कॉलरशिप|छात्रवृत्ति|वित्तीय.?सहायता/.test(value)) return { supported: true, callbackRequired: true, topic: "scholarship", facts: [profile.scholarship] };
   if (/where|location|address|कहाँ|कहा|लोकेशन|पता/.test(value)) return { supported: true, callbackRequired: false, topic: "location", facts: [`${profile.institution} is located in ${profile.location}.`] };
   if (/admission|प्रवेश|कब.?शुरू|तारीख/.test(value)) return { supported: true, callbackRequired: true, topic: "admissions", facts: [profile.admissions] };

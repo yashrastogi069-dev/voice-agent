@@ -1,4 +1,4 @@
-import type { TurnHandlingOptions } from "@livekit/agents";
+import type { RoomInputOptions, TurnHandlingOptions } from "@livekit/agents";
 
 export const LIVE_TURN_HANDLING: Partial<TurnHandlingOptions> = {
   turnDetection: "vad",
@@ -16,6 +16,22 @@ export const LIVE_TURN_HANDLING: Partial<TurnHandlingOptions> = {
 };
 
 export const LIVE_USER_AWAY_TIMEOUT_SECONDS = 45;
+
+/**
+ * This constrained development worker serves one live test conversation at a
+ * time. Keeping a single warm process prevents the default process pool from
+ * exhausting the available memory and interrupting an active voice session.
+ */
+export const LIVE_WORKER_IDLE_PROCESSES = 1;
+
+/**
+ * Keep the worker-side session alive when a browser participant briefly drops
+ * and reconnects. The explicit user-away timeout remains the bounded exit
+ * policy for an idle caller; a transport blip must not end a live call.
+ */
+export const LIVE_ROOM_INPUT_OPTIONS: Partial<RoomInputOptions> = {
+  closeOnDisconnect: false,
+};
 
 export type ConversationTurn = { role: "student" | "agent"; text: string };
 

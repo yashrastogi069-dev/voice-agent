@@ -18,6 +18,7 @@ describe("prospective-student JMC knowledge journey", () => {
     { question: "मैं Christian नहीं हूँ, क्या फिर भी apply कर सकती हूँ?", topic: "minority-seats", expected: "remaining 50 percent" },
     { question: "JMC कहाँ है?", topic: "location", expected: "New Delhi" },
     { question: "कौन-कौन से courses हैं, क्या Psychology Honours भी है?", topic: "programmes", expected: "B.A. (Hons.) Psychology" },
+    { question: "मुझे कुछ और जानकारी बताइए", topic: "overview", expected: "Student's Aid Fund" },
   ];
 
   it.each(supportedScenarios)("returns grounded $topic facts for a student asking: $question", ({ question, topic, expected }) => {

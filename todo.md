@@ -98,3 +98,7 @@
 - [ ] Eliminate the observed cross-region LiveKit worker join delay by running the durable worker in a region near the India/NZ call path; validate initial greeting startup against the Sydney Agent Console.
 - [ ] Run a real authenticated-browser LiveKit conversation with realistic student turns; inspect transcript, timing, Hindi policy, grounding, interruption, and audio continuity before closing the quality loop.
 - [ ] Defer all dashboard work until explicitly requested; prove the LiveKit worker independently registers, accepts a job, joins a room, and publishes an agent audio track before further console conversation testing.
+- [ ] Diagnose and eliminate the reported live-agent mid-session departure; verify the worker remains connected through a controlled conversation unless an explicit caller or room disconnect occurs.
+- [ ] Diagnose and eliminate mid-conversation silent turns after caller speech; verify STT, LLM, TTS, and audio publication recover without the agent leaving the room.
+- [ ] Expand approved student-information coverage and retrieval routing beyond the current narrow course suggestions; validate diverse admissions, academic, financial, campus, and student-support questions with real worker turns.
+- [ ] Deploy the LiveKit worker durably in an India-near production region; do not treat the temporary sandbox-registered worker as a production deployment.

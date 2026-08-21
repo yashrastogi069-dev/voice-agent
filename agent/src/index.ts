@@ -3,7 +3,12 @@ import { fileURLToPath } from "node:url";
 import dotenv from "dotenv";
 import { CollegeAdmissionsAgent } from "./collegeAgent";
 import { getCollegeProfile } from "./collegeKnowledge";
-import { LIVE_TURN_HANDLING, LIVE_USER_AWAY_TIMEOUT_SECONDS } from "./runtimePolicy";
+import {
+  LIVE_ROOM_INPUT_OPTIONS,
+  LIVE_TURN_HANDLING,
+  LIVE_USER_AWAY_TIMEOUT_SECONDS,
+  LIVE_WORKER_IDLE_PROCESSES,
+} from "./runtimePolicy";
 
 dotenv.config({ path: ".env.local" });
 
@@ -56,7 +61,11 @@ export default defineAgent<AgentProcessData>({
       userAwayTimeout: LIVE_USER_AWAY_TIMEOUT_SECONDS,
     });
 
-    await session.start({ agent: new CollegeAdmissionsAgent(profile), room: ctx.room });
+    await session.start({
+      agent: new CollegeAdmissionsAgent(profile),
+      room: ctx.room,
+      inputOptions: LIVE_ROOM_INPUT_OPTIONS,
+    });
     await ctx.connect();
     await session.say(
       `नमस्ते, मैं ${profile.institution} से बोल रही हूँ। मैं आपको कोर्स, फीस या एडमिशन की जानकारी दे सकती हूँ। आप किस बारे में जानना चाहेंगे?`,
@@ -68,4 +77,5 @@ export default defineAgent<AgentProcessData>({
 cli.runApp(new ServerOptions({
   agent: fileURLToPath(import.meta.url),
   agentName: "delhi-college-outbound-agent",
+  numIdleProcesses: LIVE_WORKER_IDLE_PROCESSES,
 }));

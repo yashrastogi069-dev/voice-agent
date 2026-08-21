@@ -19,4 +19,16 @@ describe("live college-agent grounding", () => {
     expect(instructions).toContain("do not tell a caller to check a website");
     expect(instructions).not.toContain("Northbridge College");
   });
+
+  it("places every approved JMC fee-document programme in the live speaking profile", () => {
+    const jmc = getCollegeProfile("jmc-2026");
+    expect(jmc.courses).toHaveLength(9);
+    expect(jmc.courses.map(course => course.name)).toEqual(expect.arrayContaining([
+      "B.A. (Hons.) Psychology",
+      "B.Sc. (Hons.) Mathematics",
+      "B.Voc. Retail Management and IT",
+      "B.El.Ed.",
+      "ITEP",
+    ]));
+  });
 });
