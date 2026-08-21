@@ -95,3 +95,4 @@
 - [ ] Evaluate agent knowledge as prospective students across admissions, programmes, fees, payments, CUET/CSAS, minority seats, eligibility, location, objections, and unsupported questions; add only verified facts and regression tests for observed gaps.
 - [ ] Send realistic prospective-student questions through the running LiveKit worker and use the live transcripts, tool traces, and TTS timings to drive each repair cycle.
 - [ ] Prevent the live session from closing on the default 15-second user-away timeout before a student can respond to the opening greeting; validate with a participant-backed audio turn.
+- [ ] Eliminate the observed cross-region LiveKit worker join delay by running the durable worker in a region near the India/NZ call path; validate initial greeting startup against the Sydney Agent Console.

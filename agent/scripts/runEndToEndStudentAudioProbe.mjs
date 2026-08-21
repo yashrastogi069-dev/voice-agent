@@ -25,6 +25,10 @@ let firstAgentAudioMs = null;
 let agentAudioFrames = 0;
 let agentIdentity = null;
 let dispatchId = null;
+let studentAudioFrames = 0;
+let studentAudioSamples = 0;
+let studentAudioPeak = 0;
+let studentAudioFormat = null;
 
 listener.registerTextStreamHandler("lk.transcription", async (reader, participantInfo) => {
   transcriptionPayloads.push({ identity: participantInfo.identity, payload: await reader.readAll() });
@@ -74,13 +78,21 @@ try {
   const first = await stream.next();
   if (first.done || first.value === stream.constructor.END_OF_STREAM) throw new Error("The student-question TTS stream produced no audio");
   source = new AudioSource(first.value.frame.sampleRate, first.value.frame.channels);
+  studentAudioFormat = { sampleRate: first.value.frame.sampleRate, channels: first.value.frame.channels };
   microphoneTrack = LocalAudioTrack.createAudioTrack("quality-student-microphone", source);
   const publication = await listener.localParticipant.publishTrack(microphoneTrack, { source: TrackSource.MICROPHONE });
   await publication.waitForSubscription();
-  await source.captureFrame(first.value.frame);
+  const captureStudentFrame = async frame => {
+    studentAudioFrames += 1;
+    studentAudioSamples += frame.data.length;
+    for (const sample of frame.data) studentAudioPeak = Math.max(studentAudioPeak, Math.abs(sample));
+    await source.captureFrame(frame);
+  };
+  await sleep(400);
+  await captureStudentFrame(first.value.frame);
   for await (const event of stream) {
     if (!event || typeof event !== "object" || !("frame" in event)) continue;
-    await source.captureFrame(event.frame);
+    await captureStudentFrame(event.frame);
   }
   await source.waitForPlayout();
   await speakerTts.close();
@@ -94,6 +106,10 @@ try {
     agentIdentity,
     firstAgentAudioMs,
     agentAudioFrames,
+    studentAudioFormat,
+    studentAudioFrames,
+    studentAudioDurationMs: studentAudioFormat === null ? null : Number(((studentAudioSamples / studentAudioFormat.channels / studentAudioFormat.sampleRate) * 1000).toFixed(0)),
+    studentAudioPeak,
     audioTracks,
     transcriptionPayloads,
     passed: agentAudioFrames > 0 && transcriptionPayloads.length > 0,
